@@ -12,6 +12,7 @@ import Offers from "./pages/Offers";
 import OutletSettings from "./pages/OutletSettings";
 import OutletInfo from "./pages/OutletInfo";
 import Help from "./pages/Help";
+import AddItemForm from "./components/AddItemForm";
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="/" element={<DashboardHome />} />
         <Route path="/delivery-menu" element={<DeliveryMenu />} />
         <Route path="/dine-in-menu" element={<DineInMenu />} />
+        <Route path="/AddItemForm" element={< AddItemForm />} />
         <Route path="/taxes-charges" element={<TaxesAndCharges />} />
         <Route path="/offers" element={<Offers />} />
         <Route path="/outlet-settings" element={<OutletSettings />} />
