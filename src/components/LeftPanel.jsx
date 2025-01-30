@@ -1,19 +1,22 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { FiChevronDown, FiPlusCircle, FiLink, FiLayers, FiFolderPlus } from "react-icons/fi"
+import { FiChevronDown, FiLink, FiLayers, FiFolderPlus } from "react-icons/fi"
 import { MdOutlineFiberManualRecord } from "react-icons/md"
 import AddItemForm from "./AddItemForm"
 import PopUp from "./PopUp"
-
-
-
+import MapExistingItem from "./MapExistingItem"
+import CreateComboForm from "./CreateComboForm" // Import the new CreateComboForm component
+import AddSubcategoryForm from "./AddSubcategoryForm" // Add this import
 
 const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
   const [openCategories, setOpenCategories] = useState({})
-  const navigate = useNavigate()
   const [isPopUpOpen, setIsPopUpOpen] = useState(false)
   const [popUpTitle, setPopUpTitle] = useState("")
   const [showAddItemForm, setShowAddItemForm] = useState(false)
+  const [showMapExistingItem, setShowMapExistingItem] = useState(false)
+  const [showCreateComboForm, setShowCreateComboForm] = useState(false) // New state for CreateComboForm
+  const [showAddSubcategoryForm, setShowAddSubcategoryForm] = useState(false) // Add this state variable
+  const navigate = useNavigate()
 
   const toggleCategory = (categoryName) => {
     setOpenCategories((prev) => ({
@@ -22,26 +25,37 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
     }))
   }
 
-  // const handleActionClick = (action) => {
-  //   if (action === "Add Item") {
-  //     // setShowAddItemForm(true)
-  //     navigate("/add-item")
-  //   } else {
-  //     setPopUpTitle(action)
-  //     setIsPopUpOpen(true)
-  //   }
-  // }
   const handleActionClick = (action) => {
     if (action === "Add Item") {
-      setShowAddItemForm(true); // Open the Add Item Form on the same page
+      setShowAddItemForm(true)
+    } else if (action === "Map Existing Item") {
+      setShowMapExistingItem(true)
+    } else if (action === "Create Combo") {
+      setShowCreateComboForm(true) // Show the CreateComboForm
+    } else if (action === "Add Subcategory") {
+      // Add this condition
+      setShowAddSubcategoryForm(true) // Show the AddSubcategoryForm
     } else {
-      setPopUpTitle(action);
-      setIsPopUpOpen(true);
+      setPopUpTitle(action)
+      setIsPopUpOpen(true)
     }
-  };
+  }
 
   const handleCloseAddItem = () => {
     setShowAddItemForm(false)
+  }
+
+  const handleCloseMapExistingItem = () => {
+    setShowMapExistingItem(false)
+  }
+
+  const handleCloseCreateCombo = () => {
+    setShowCreateComboForm(false)
+  }
+
+  const handleCloseAddSubcategory = () => {
+    // Add this function
+    setShowAddSubcategoryForm(false)
   }
 
   const closePopUp = () => {
@@ -50,10 +64,10 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
   }
 
   return (
-    <div className="w-1/3 bg-gray-50 border-r border-gray-200 p-4 flex flex-col justify-between h-full overflow-y-auto custom-scrollbar">
+    <div className="bg-gray-50 border-r border-gray-200 flex flex-col justify-between h-full overflow-y-auto custom-scrollbar">
       {/* Menu Listing */}
       <div>
-        <h2 className="text-xl font-semibold mb-4 text-gray-700">Menu Listing</h2>
+        <h2 className="text-xl font-semibold mb-6 text-gray-700">Menu Listing</h2>
         {categories.map((category) => (
           <div key={category.name} className="mb-4">
             {/* Category Header */}
@@ -109,14 +123,15 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
       </div>
 
       {/* Bottom Action Section */}
-      <div className="mt-4 pt-4 border-t mb-28 border-gray-200">
+      <div className="pt-4 border-t border-gray-200">
         <div className="grid mb-20 grid-cols-2 gap-2">
           {/* Add Item */}
           <button
-             onClick={() => handleActionClick("Add Item")}
-            className="w-full py-2 bg-blue-500 text-white rounded-md">
+            onClick={() => handleActionClick("Add Item")}
+            className="w-full py-2 bg-blue-500 text-white rounded-md"
+          >
             Add Item
-         </button>
+          </button>
 
           {/* Map Existing Item */}
           <button
@@ -153,6 +168,32 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
           <AddItemForm isOpen={showAddItemForm} onClose={handleCloseAddItem} dropdownOptions={dropdownOptions} />
         </div>
       )}
+
+      {/* Map Existing Item */}
+      {showMapExistingItem && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <MapExistingItem onClose={handleCloseMapExistingItem} />
+        </div>
+      )}
+
+      {/* Create Combo Form */}
+      {showCreateComboForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <CreateComboForm isOpen={showCreateComboForm} onClose={handleCloseCreateCombo} categories={categories} />
+        </div>
+      )}
+
+      {/* Add Subcategory Form */}
+      {showAddSubcategoryForm && ( // Add this conditional rendering
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <AddSubcategoryForm
+            isOpen={showAddSubcategoryForm}
+            onClose={handleCloseAddSubcategory}
+            categories={categories}
+          />
+        </div>
+      )}
+
       {/* Pop-Up for other actions */}
       {isPopUpOpen && (
         <PopUp isOpen={isPopUpOpen} onClose={closePopUp} title={popUpTitle}>
@@ -164,6 +205,4 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
 }
 
 export default LeftPanel
-
-
 
