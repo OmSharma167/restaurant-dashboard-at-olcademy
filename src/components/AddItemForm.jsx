@@ -1,17 +1,17 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { X } from "lucide-react"
 
 const AddItemForm = ({ isOpen, onClose, dropdownOptions = {} }) => {
   const initialFormState = {
     name: "",
-    type: "Veg",
+    type: "choose type",
     category: "",
     subCategory: "",
-    offer: "No Offer",
+    offer: "Choose Offer",
     serviceType: [],
     pricing: "",
     taxes: "5% GST",
-    charges: "No Extra Charge",
+    charges: "Choose Charge",
     description: "",
     dishDetails: {
       servingInfo: "",
@@ -26,12 +26,20 @@ const AddItemForm = ({ isOpen, onClose, dropdownOptions = {} }) => {
 
   // Destructure dropdownOptions with default values
   const {
-    foodTypes = ["Veg", "Non-Veg", "Egg"],
+    foodTypes = ["Select Food Types", "Veg", "Non-Veg", "Egg"],
     categories = [],
     subCategories = [],
-    offers = ["No Offer"],
-    serviceTypes = [],
+    offers = ["Select Offers", "Buy 1 Get 1", "50% Off", "30% Off", "20% Off", "10% Off"],
+    serviceTypes = ["Dine-in", "Takeaway", "Delivery"],
   } = dropdownOptions
+
+  // Define categories and subcategories
+  const categorySubCategoryMap = {
+    "Main Course": ["Pasta", "Pizza", "Burger", "Rice"],
+    Appetizers: ["Salad", "Soup", "Bread"],
+    Desserts: ["Ice Cream", "Cake", "Pastry"],
+    Beverages: ["Coffee", "Tea", "Juice"],
+  }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -87,8 +95,8 @@ const AddItemForm = ({ isOpen, onClose, dropdownOptions = {} }) => {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center ">
-      <div className="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+    <div className="mt-10 bg-black bg-opacity-50 flex items-center justify-center">
+      <div className="bg-white rounded-lg max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-semibold text-gray-800">Add New Item</h2>
@@ -141,7 +149,7 @@ const AddItemForm = ({ isOpen, onClose, dropdownOptions = {} }) => {
                   className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
                 >
                   <option value="">Select Category</option>
-                  {categories.map((category) => (
+                  {Object.keys(categorySubCategoryMap).map((category) => (
                     <option key={category} value={category}>
                       {category}
                     </option>
@@ -159,11 +167,12 @@ const AddItemForm = ({ isOpen, onClose, dropdownOptions = {} }) => {
                   className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
                 >
                   <option value="">Select Subcategory</option>
-                  {subCategories.map((subCategory) => (
-                    <option key={subCategory} value={subCategory}>
-                      {subCategory}
-                    </option>
-                  ))}
+                  {formData.category &&
+                    categorySubCategoryMap[formData.category]?.map((subCategory) => (
+                      <option key={subCategory} value={subCategory}>
+                        {subCategory}
+                      </option>
+                    ))}
                 </select>
                 {errors.subCategory && <p className="text-red-500 text-sm mt-1">{errors.subCategory}</p>}
               </div>
@@ -198,6 +207,32 @@ const AddItemForm = ({ isOpen, onClose, dropdownOptions = {} }) => {
                     </option>
                   ))}
                 </select>
+              </div>
+            </div>
+
+            {/* Taxes and Charges */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Taxes</label>
+                <input
+                  type="text"
+                  name="taxes"
+                  value={formData.taxes}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                  placeholder="Enter taxes"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Charges</label>
+                <input
+                  type="text"
+                  name="charges"
+                  value={formData.charges}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                  placeholder="Enter charges"
+                />
               </div>
             </div>
 

@@ -1,14 +1,19 @@
-import { useState } from "react"
+import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { FiChevronDown, FiPlusCircle, FiLink, FiLayers, FiFolderPlus } from "react-icons/fi"
 import { MdOutlineFiberManualRecord } from "react-icons/md"
+import AddItemForm from "./AddItemForm"
 import PopUp from "./PopUp"
+
+
+
 
 const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
   const [openCategories, setOpenCategories] = useState({})
   const navigate = useNavigate()
   const [isPopUpOpen, setIsPopUpOpen] = useState(false)
   const [popUpTitle, setPopUpTitle] = useState("")
+  const [showAddItemForm, setShowAddItemForm] = useState(false)
 
   const toggleCategory = (categoryName) => {
     setOpenCategories((prev) => ({
@@ -17,13 +22,26 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
     }))
   }
 
+  // const handleActionClick = (action) => {
+  //   if (action === "Add Item") {
+  //     // setShowAddItemForm(true)
+  //     navigate("/add-item")
+  //   } else {
+  //     setPopUpTitle(action)
+  //     setIsPopUpOpen(true)
+  //   }
+  // }
   const handleActionClick = (action) => {
     if (action === "Add Item") {
-      navigate("/add-item")
+      setShowAddItemForm(true); // Open the Add Item Form on the same page
     } else {
-      setPopUpTitle(action)
-      setIsPopUpOpen(true)
+      setPopUpTitle(action);
+      setIsPopUpOpen(true);
     }
+  };
+
+  const handleCloseAddItem = () => {
+    setShowAddItemForm(false)
   }
 
   const closePopUp = () => {
@@ -92,15 +110,13 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
 
       {/* Bottom Action Section */}
       <div className="mt-4 pt-4 border-t mb-28 border-gray-200">
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid mb-20 grid-cols-2 gap-2">
           {/* Add Item */}
           <button
-            onClick={() => handleActionClick("Add Item")}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 transition-all"
-          >
-            <FiPlusCircle className="text-blue-500" />
-            <span className="text-gray-700 text-sm font-medium">Add Item</span>
-          </button>
+             onClick={() => handleActionClick("Add Item")}
+            className="w-full py-2 bg-blue-500 text-white rounded-md">
+            Add Item
+         </button>
 
           {/* Map Existing Item */}
           <button
@@ -131,6 +147,12 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
         </div>
       </div>
 
+      {/* Add Item Form */}
+      {showAddItemForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <AddItemForm isOpen={showAddItemForm} onClose={handleCloseAddItem} dropdownOptions={dropdownOptions} />
+        </div>
+      )}
       {/* Pop-Up for other actions */}
       {isPopUpOpen && (
         <PopUp isOpen={isPopUpOpen} onClose={closePopUp} title={popUpTitle}>
@@ -142,4 +164,6 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
 }
 
 export default LeftPanel
+
+
 

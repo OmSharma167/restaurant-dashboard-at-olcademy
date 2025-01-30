@@ -21,7 +21,7 @@ export default function App() {
         <Route path="/" element={<DashboardHome />} />
         <Route path="/delivery-menu" element={<DeliveryMenu />} />
         <Route path="/dine-in-menu" element={<DineInMenu />} />
-        <Route path="/AddItemForm" element={< AddItemForm />} />
+        <Route path="/add-item" element={< AddItemForm />} />
         <Route path="/taxes-charges" element={<TaxesAndCharges />} />
         <Route path="/offers" element={<Offers />} />
         <Route path="/outlet-settings" element={<OutletSettings />} />
