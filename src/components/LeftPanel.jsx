@@ -64,9 +64,9 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
   }
 
   return (
-    <div className="bg-gray-50 border-r border-gray-200 flex flex-col justify-between h-full overflow-y-auto custom-scrollbar">
+    <div className="bg-gray-50 border-r border-gray-200 flex flex-col justify-between     overflow-hidden custom-scrollbar">
       {/* Menu Listing */}
-      <div>
+      <div className="flex-1 overflow-hidden">
         <h2 className="text-xl font-semibold mb-6 text-gray-700">Menu Listing</h2>
         {categories.map((category) => (
           <div key={category.name} className="mb-4">
@@ -124,7 +124,7 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
 
       {/* Bottom Action Section */}
       <div className="pt-4 border-t border-gray-200">
-        <div className="grid mb-20 grid-cols-2 gap-2">
+        <div className="grid mb-28 grid-cols-2 gap-2">
           {/* Add Item */}
           <button
             onClick={() => handleActionClick("Add Item")}

@@ -26,11 +26,11 @@ const AddItemForm = ({ isOpen, onClose, dropdownOptions = {} }) => {
 
   // Destructure dropdownOptions with default values
   const {
-    foodTypes = ["Select Food Types", "Veg", "Non-Veg", "Egg"],
+    foodTypes = ["Select food types", "Veg", "Non-Veg", "Egg"],
     categories = [],
     subCategories = [],
     offers = ["Select Offers", "Buy 1 Get 1", "50% Off", "30% Off", "20% Off", "10% Off"],
-    serviceTypes = ["Dine-in", "Takeaway", "Delivery"],
+    serviceTypes = ["Delivery", "Takeaway",],
   } = dropdownOptions
 
   // Define categories and subcategories
@@ -95,8 +95,8 @@ const AddItemForm = ({ isOpen, onClose, dropdownOptions = {} }) => {
   if (!isOpen) return null
 
   return (
-    <div className="mt-10 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white rounded-lg max-h-[90vh] overflow-y-auto">
+    <div className="mt-20  w-3/4  bg-white shadow-md border-l border-gray-200 overflow-y-auto ml-[9%] ">
+      <div className="bg-white rounded-lg max-h-[90vh] overflow-y-auto  ">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-semibold text-gray-800">Add New Item</h2>
@@ -127,7 +127,7 @@ const AddItemForm = ({ isOpen, onClose, dropdownOptions = {} }) => {
                   name="type"
                   value={formData.type}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-500"
                 >
                   {foodTypes.map((type) => (
                     <option key={type} value={type}>
@@ -146,7 +146,7 @@ const AddItemForm = ({ isOpen, onClose, dropdownOptions = {} }) => {
                   name="category"
                   value={formData.category}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                  className="mt-1 block text-gray-500 w-full rounded-md border border-gray-300 px-3 py-2"
                 >
                   <option value="">Select Category</option>
                   {Object.keys(categorySubCategoryMap).map((category) => (
@@ -164,7 +164,7 @@ const AddItemForm = ({ isOpen, onClose, dropdownOptions = {} }) => {
                   name="subCategory"
                   value={formData.subCategory}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                  className="mt-1 block w-full   text-gray-500 rounded-md border border-gray-300 px-3 py-2"
                 >
                   <option value="">Select Subcategory</option>
                   {formData.category &&
@@ -187,7 +187,7 @@ const AddItemForm = ({ isOpen, onClose, dropdownOptions = {} }) => {
                   name="pricing"
                   value={formData.pricing}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                  className="mt-1 block text-gray-500 w-full rounded-md border border-gray-300 px-3 py-2"
                   placeholder="Enter price"
                 />
                 {errors.pricing && <p className="text-red-500 text-sm mt-1">{errors.pricing}</p>}
@@ -199,7 +199,7 @@ const AddItemForm = ({ isOpen, onClose, dropdownOptions = {} }) => {
                   name="offer"
                   value={formData.offer}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                  className="mt-1 block w-full text-gray-500 rounded-md border border-gray-300 px-3 py-2"
                 >
                   {offers.map((offer) => (
                     <option key={offer} value={offer}>
@@ -219,7 +219,7 @@ const AddItemForm = ({ isOpen, onClose, dropdownOptions = {} }) => {
                   name="taxes"
                   value={formData.taxes}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                  className="mt-1 block text-gray-500 w-full rounded-md border border-gray-300 px-3 py-2"
                   placeholder="Enter taxes"
                 />
               </div>
@@ -230,7 +230,7 @@ const AddItemForm = ({ isOpen, onClose, dropdownOptions = {} }) => {
                   name="charges"
                   value={formData.charges}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                  className="mt-1 block  text-gray-500 w-full rounded-md border border-gray-300 px-3 py-2"
                   placeholder="Enter charges"
                 />
               </div>
@@ -319,7 +319,7 @@ const AddItemForm = ({ isOpen, onClose, dropdownOptions = {} }) => {
               </div>
             </div>
 
-            {/* Submit Button */}
+        
             <div className="flex justify-end gap-4">
               <button
                 type="button"

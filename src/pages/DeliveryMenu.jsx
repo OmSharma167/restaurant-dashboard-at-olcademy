@@ -18,7 +18,7 @@ export default function DeliveryMenu() {
   };
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col fixed h-screen">
       {/* <TopBar title="Takeaway Menu" /> */}
       <div className="flex flex-1 overflow-hidden">
         <LeftPanel
