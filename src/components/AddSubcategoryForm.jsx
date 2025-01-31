@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { FiX } from "react-icons/fi"
 
-const AddSubcategoryForm = ({ isOpen, onClose, categories }) => {
+const AddSubcategory = ({ isOpen, onClose, categories }) => {
   const [subcategoryName, setSubcategoryName] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("")
 
@@ -81,5 +81,4 @@ const AddSubcategoryForm = ({ isOpen, onClose, categories }) => {
   )
 }
 
-export default AddSubcategoryForm
-
+export default AddSubcategory

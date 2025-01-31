@@ -139,7 +139,7 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
             className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 transition-all"
           >
             <FiLink className="text-green-500" />
-            <span className="text-gray-700 text-sm font-medium">Map Existing Item</span>
+            <span className="text-gray-700 text-sm font-medium">Add Existing Item</span>
           </button>
 
           {/* Create Combo */}

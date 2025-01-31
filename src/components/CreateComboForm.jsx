@@ -1,144 +1,254 @@
-import { useState } from "react"
-import { FiX, FiPlus, FiMinus } from "react-icons/fi"
 
-const CreateComboForm = ({ isOpen, onClose, categories }) => {
+
+
+
+import { useState } from "react"
+import { Plus, Minus } from "lucide-react"
+
+// Simulating the shadcn/ui components
+const Button = ({ children, onClick, variant, size, className = "" }) => (
+  <button
+    onClick={onClick}
+    className={`px-4 py-2 rounded ${
+      variant === "outline"
+        ? "border border-gray-300"
+        : variant === "destructive"
+        ? "bg-red-500 text-white"
+        : "bg-blue-500 text-white"
+    } ${size === "sm" ? "text-sm" : ""} ${className}`}
+  >
+    {children}
+  </button>
+)
+
+const Input = ({ id, value, onChange, placeholder, type = "text", min, step }) => (
+  <input
+    id={id}
+    value={value}
+    onChange={onChange}
+    placeholder={placeholder}
+    type={type}
+    min={min}
+    step={step}
+    className="w-full px-3 py-2 border border-gray-300 rounded"
+  />
+)
+
+const Label = ({ htmlFor, children }) => (
+  <label htmlFor={htmlFor} className="block text-sm font-medium text-gray-700">
+    {children}
+  </label>
+)
+
+
+const items = [
+  {
+    id: 1,
+    name: "Paneer Tikka",
+    category: "Starters",
+    subCategory: "Veg Starters",
+    type: "Veg",
+    description: "Soft paneer marinated in spices and grilled to perfection.",
+  },
+  {
+    id: 2,
+    name: "Veg Spring Rolls",
+    category: "Starters",
+    subCategory: "Veg Starters",
+    type: "Veg",
+    description: "Crispy rolls stuffed with fresh vegetables.",
+  },
+  {
+    id: 4,
+    name: "Hara Bhara Kebab",
+    category: "Appetizers",
+    subCategory: "Veg Appetizers",
+    type: "Veg",
+    description: "Delicious kebabs made from spinach and peas.",
+  },
+  {
+    id: 9,
+    name: "Chicken Lollipop",
+    category: "Appetizers",
+    subCategory: "Non-Veg Appetizers",
+    type: "Non-Veg",
+    description: "Chicken wings shaped like a lollipop and fried crisp.",
+  },
+  {
+    id: 10,
+    name: "Mutton Seekh Kebab",
+    category: "Appetizers",
+    subCategory: "Non-Veg Appetizers",
+    type: "Non-Veg",
+    description: "Spicy ground mutton skewers cooked on a grill.",
+  },
+]
+
+
+const CreateComboForm = ({ isOpen, onClose }) => {
+  const [selectedItems, setSelectedItems] = useState([])
   const [comboName, setComboName] = useState("")
   const [comboPrice, setComboPrice] = useState("")
-  const [selectedItems, setSelectedItems] = useState([])
+  const [error, setError] = useState("")
 
   const handleAddItem = (item) => {
-    setSelectedItems([...selectedItems, { ...item, quantity: 1 }])
+    setSelectedItems((prev) => {
+      const existingItem = prev.find((i) => i.id === item.id)
+      if (existingItem) {
+        return prev.map((i) => (i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i))
+      }
+      return [...prev, { ...item, quantity: 1 }]
+    })
   }
 
-  const handleRemoveItem = (index) => {
-    const newItems = [...selectedItems]
-    newItems.splice(index, 1)
-    setSelectedItems(newItems)
+  const handleRemoveItem = (id) => {
+    setSelectedItems((prev) => prev.filter((i) => i.id !== id))
   }
 
-  const handleQuantityChange = (index, change) => {
-    const newItems = [...selectedItems]
-    newItems[index].quantity = Math.max(1, newItems[index].quantity + change)
-    setSelectedItems(newItems)
+  const handleQuantityChange = (id, delta) => {
+    setSelectedItems((prev) => prev.map((i) => (i.id === id ? { ...i, quantity: Math.max(1, i.quantity + delta) } : i)))
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    // Here you would typically send the combo data to your backend
-    console.log("Combo created:", { name: comboName, price: comboPrice, items: selectedItems })
+  const handleSubmit = () => {
+    if (!comboName.trim()) {
+      setError("Please enter a combo name")
+      return
+    }
+    if (!comboPrice.trim() || isNaN(Number(comboPrice))) {
+      setError("Please enter a valid combo price")
+      return
+    }
+    if (selectedItems.length === 0) {
+      setError("Please select at least one item for the combo")
+      return
+    }
+
+    const combo = {
+      name: comboName,
+      price: Number(comboPrice),
+      items: selectedItems,
+    }
+
+    console.log("Saved combo:", combo)
+    // Reset form
+    setComboName("")
+    setComboPrice("")
+    setSelectedItems([])
+    setError("")
     onClose()
   }
 
   if (!isOpen) return null
 
   return (
-    <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold">Create Combo</h2>
-        <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
-          <FiX size={24} />
-        </button>
-      </div>
+    <div className="fixed inset-0 w-screen bg-black bg-opacity-50 flex items-center justify-center p-4 overflow-auto">
+      <div className="bg-white   mt-20 p-6 rounded-lg w-full max-w-4xl">
+        <div className="mb-4  mt-32 overflow-x-auto">
+          <table className="w-full border-collapse border border-gray-300">
+            <thead>
+              <tr className="bg-gray-200">
+                <th className="border p-2">ID</th>
+                <th className="border p-2">Item</th>
+                <th className="border p-2">Category</th>
+                <th className="border p-2">Subcategory</th>
+                <th className="border p-2">Food Type</th>
+                <th className="border p-2">Description</th>
+                <th className="border p-2">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {items.map((item) => (
+                <tr key={item.id} className="border">
+                  <td className="border p-2">{item.id}</td>
+                  <td className="border p-2">{item.name}</td>
+                  <td className="border p-2">{item.category}</td>
+                  <td className="border p-2">{item.subCategory}</td>
+                  <td className="border p-2">{item.type}</td>
+                  <td className="border p-2">{item.description}</td>
+                  <td className="border p-2">
+                    <Button variant="outline" size="sm" onClick={() => handleAddItem(item)}>
+                      Add
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <h3 className="text-xl font-bold mt-4">Creat Combo Items</h3>
 
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="comboName" className="block text-sm font-medium text-gray-700">
-            Combo Name
-          </label>
-          <input
-            type="text"
+        <div className="mb-4 space-y-2">
+          <Label htmlFor="comboName">Combo Name</Label>
+          <Input
             id="comboName"
             value={comboName}
             onChange={(e) => setComboName(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            required
+            placeholder="Enter combo name"
           />
         </div>
 
-        <div className="mb-4">
-          <label htmlFor="comboPrice" className="block text-sm font-medium text-gray-700">
-            Combo Price
-          </label>
-          <input
-            type="number"
+        <div className="mb-4 space-y-2">
+          <Label htmlFor="comboPrice">Combo Price</Label>
+          <Input
             id="comboPrice"
             value={comboPrice}
             onChange={(e) => setComboPrice(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            required
+            placeholder="Enter combo price"
+            type="number"
+            min="0"
+            step="0.01"
           />
         </div>
 
-        <div className="mb-4">
-          <h3 className="text-lg font-medium text-gray-700 mb-2">Select Items</h3>
-          <div className="grid grid-cols-2 gap-4">
-            {categories.map((category) => (
-              <div key={category.name}>
-                <h4 className="font-medium text-gray-600 mb-2">{category.name}</h4>
-                {category.subcategories?.map((sub) => (
-                  <div key={sub.name}>
-                    {sub.items?.map((item) => (
-                      <button
-                        key={item.id}
-                        type="button"
-                        onClick={() => handleAddItem(item)}
-                        className="w-full text-left px-2 py-1 hover:bg-gray-100 rounded-md"
-                      >
-                        {item.name}
-                      </button>
-                    ))}
-                  </div>
+        <h3 className="text-xl font-bold mt-4">Selected Combo Items</h3>
+        {selectedItems.length > 0 ? (
+          <div className="overflow-x-auto max-h-60 overflow-y-auto mt-2">
+            <table className="w-full border-collapse border border-gray-300">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="border p-2">Item</th>
+                  <th className="border p-2">Quantity</th>
+                  <th className="border p-2">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {selectedItems.map((item) => (
+                  <tr key={item.id} className="border">
+                    <td className="border p-2">{item.name}</td>
+                    <td className="border p-2 flex items-center justify-center gap-2">
+                      <Button variant="outline" size="sm" onClick={() => handleQuantityChange(item.id, -1)}>
+                        <Minus className="h-4 w-4" />
+                      </Button>
+                      {item.quantity}
+                      <Button variant="outline" size="sm" onClick={() => handleQuantityChange(item.id, 1)}>
+                        <Plus className="h-4 w-4" />
+                      </Button>
+                    </td>
+                    <td className="border p-2">
+                      <Button variant="destructive" size="sm" onClick={() => handleRemoveItem(item.id)}>
+                        Remove
+                      </Button>
+                    </td>
+                  </tr>
                 ))}
-              </div>
-            ))}
+              </tbody>
+            </table>
           </div>
-        </div>
+        ) : (
+          <p className="mt-2">No items selected</p>
+        )}
 
-        <div className="mb-4">
-          <h3 className="text-lg font-medium text-gray-700 mb-2">Selected Items</h3>
-          {selectedItems.map((item, index) => (
-            <div key={index} className="flex items-center justify-between py-2 border-b">
-              <span>{item.name}</span>
-              <div className="flex items-center">
-                <button
-                  type="button"
-                  onClick={() => handleQuantityChange(index, -1)}
-                  className="p-1 bg-gray-200 rounded-full mr-2"
-                >
-                  <FiMinus size={16} />
-                </button>
-                <span>{item.quantity}</span>
-                <button
-                  type="button"
-                  onClick={() => handleQuantityChange(index, 1)}
-                  className="p-1 bg-gray-200 rounded-full ml-2"
-                >
-                  <FiPlus size={16} />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleRemoveItem(index)}
-                  className="ml-4 text-red-500 hover:text-red-700"
-                >
-                  <FiX size={20} />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
+        {error && <p className="text-red-500 mt-2">{error}</p>}
 
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-all"
-          >
-            Create Combo
-          </button>
+        <div className="mt-4 flex justify-end space-x-2">
+          <Button variant="outline" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button onClick={handleSubmit}>Save Combo</Button>
         </div>
-      </form>
+      </div>
     </div>
   )
 }
 
 export default CreateComboForm
-

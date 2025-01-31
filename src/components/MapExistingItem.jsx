@@ -48,7 +48,7 @@ const MapExistingItem = () => {
 
   return (
     <div className="mt-12 w-3/4 h-screen bg-white shadow-lg border-l border-gray-200 overflow-y-auto ml-[9%] rounded-lg">
-      <h2 className="text-3xl font-bold mb-6 text-gray-800">Map Existing Items</h2>
+      <h2 className="text-3xl font-bold mb-6 text-gray-800">Add Existing Items</h2>
 
       <div className="mb-6">
         <div className="relative">
