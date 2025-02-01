@@ -62,7 +62,7 @@ const RightPanel = ({ selectedProduct, onDelete, onDuplicate }) => {
   }
 
   return (
-    <div className="w-screen p-6 bg-white shadow-md border-l border-gray-200 overflow-y-auto">
+    <div className=" p-6 bg-white shadow-md border-l border-gray-200 overflow-y-auto">
       {/* Header */}
       <HeaderComponent
         title={data.name || "Untitled"}
@@ -73,40 +73,37 @@ const RightPanel = ({ selectedProduct, onDelete, onDuplicate }) => {
         onDuplicate={handleDuplicate}
       />
 
+      {/* Content */}
       <div className="flex gap-9">
         {/* Category Dropdowns */}
-      <CategoryComponent
-        isEditMode={isEditMode}
-        data={data}
-        categories={dummyData.dropdownOptions.categories}
-        subCategories={dummyData.dropdownOptions.subCategories}
-        offers={dummyData.dropdownOptions.offers}
-        onChange={handleFieldChange}
-      />
+        <CategoryComponent
+          isEditMode={isEditMode}
+          data={data}
+          categories={dummyData.dropdownOptions.categories}
+          subCategories={dummyData.dropdownOptions.subCategories}
+          offers={dummyData.dropdownOptions.offers}
+          onChange={handleFieldChange}
+        />
 
-      {/* Pricing */}
-      <PricingComponent
-        isEditMode={isEditMode}
-        pricing={data.pricing}
-        taxes={data.taxes}
-        charges={data.charges}
-        onChange={handleFieldChange}
-      />
-
+        {/* Pricing */}
+        <PricingComponent
+          isEditMode={isEditMode}
+          pricing={data.pricing}
+          taxes={data.taxes}
+          charges={data.charges}
+          onChange={handleFieldChange}
+        />
       </div>
-      {/* Food Type */}
+
+      {/* Other Components */}
       <FoodTypeComponent
         isEditMode={isEditMode}
         selectedType={data.type}
         onTypeChange={(type) => handleFieldChange("type", type)}
       />
 
-      {/* Service Type */}
       <ServiceTypeComponent serviceTypes={data.serviceType || []} />
 
-      
-
-      {/* Dish Details */}
       <DishDetailsComponent
         isEditMode={isEditMode}
         details={data.dishDetails || {}}
@@ -122,14 +119,12 @@ const RightPanel = ({ selectedProduct, onDelete, onDuplicate }) => {
         }}
       />
 
-      {/* Item Description */}
       <ItemDescriptionComponent
         isEditMode={isEditMode}
         description={data.description}
         onChange={handleFieldChange}
       />
 
-      {/* Images */}
       <ImagesComponent
         isEditMode={isEditMode}
         images={data.images || [null, null, null]}
