@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { FiX } from "react-icons/fi"
+import { X } from "lucide-react";
 
 const AddSubcategory = ({ isOpen, onClose, categories }) => {
   const [subcategoryName, setSubcategoryName] = useState("")

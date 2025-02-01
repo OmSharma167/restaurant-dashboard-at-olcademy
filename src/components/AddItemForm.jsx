@@ -1,5 +1,6 @@
 import { useState } from "react"
-import { X } from "lucide-react"
+
+import { X, Upload } from "lucide-react";
 
 const AddItemForm = ({ isOpen, onClose, dropdownOptions = {} }) => {
   const initialFormState = {
@@ -20,7 +21,16 @@ const AddItemForm = ({ isOpen, onClose, dropdownOptions = {} }) => {
       preparationTime: "",
     },
   }
+const [images, setImages] = useState([]);
 
+  const handleImageUpload = (e) => {
+    const files = Array.from(e.target.files);
+    setImages([...images, ...files]);
+  };
+
+  const removeImage = (index) => {
+    setImages(images.filter((_, i) => i !== index));
+  };
   const [formData, setFormData] = useState(initialFormState)
   const [errors, setErrors] = useState({})
 
@@ -95,7 +105,7 @@ const AddItemForm = ({ isOpen, onClose, dropdownOptions = {} }) => {
   if (!isOpen) return null
 
   return (
-    <div className="mt-20  w-3/4  bg-white shadow-md border-l border-gray-200 overflow-y-auto ml-[9%] ">
+    <div className="mt-20  w-3/4  bg-white shadow-md border-l border-gray-200 overflow-y-auto ml-[38%] ">
       <div className="bg-white rounded-lg max-h-[90vh] overflow-y-auto  ">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
@@ -192,49 +202,9 @@ const AddItemForm = ({ isOpen, onClose, dropdownOptions = {} }) => {
                 />
                 {errors.pricing && <p className="text-red-500 text-sm mt-1">{errors.pricing}</p>}
               </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Offer</label>
-                <select
-                  name="offer"
-                  value={formData.offer}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full text-gray-500 rounded-md border border-gray-300 px-3 py-2"
-                >
-                  {offers.map((offer) => (
-                    <option key={offer} value={offer}>
-                      {offer}
-                    </option>
-                  ))}
-                </select>
-              </div>
             </div>
 
-            {/* Taxes and Charges */}
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Taxes</label>
-                <input
-                  type="text"
-                  name="taxes"
-                  value={formData.taxes}
-                  onChange={handleInputChange}
-                  className="mt-1 block text-gray-500 w-full rounded-md border border-gray-300 px-3 py-2"
-                  placeholder="Enter taxes"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Charges</label>
-                <input
-                  type="text"
-                  name="charges"
-                  value={formData.charges}
-                  onChange={handleInputChange}
-                  className="mt-1 block  text-gray-500 w-full rounded-md border border-gray-300 px-3 py-2"
-                  placeholder="Enter charges"
-                />
-              </div>
-            </div>
+            
 
             {/* Service Types */}
             <div>
@@ -278,7 +248,7 @@ const AddItemForm = ({ isOpen, onClose, dropdownOptions = {} }) => {
                   value={formData.dishDetails.servingInfo}
                   onChange={handleInputChange}
                   className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
-                  placeholder="e.g., 2 Pieces"
+                  placeholder="e.g., 2 Persons"
                 />
               </div>
 
@@ -295,32 +265,60 @@ const AddItemForm = ({ isOpen, onClose, dropdownOptions = {} }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">Portion Size</label>
-                <input
-                  type="text"
-                  name="dishDetails.portionSize"
-                  value={formData.dishDetails.portionSize}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
-                  placeholder="e.g., Medium"
-                />
-              </div>
+  <label className="block text-sm font-medium text-gray-700">Portion Size</label>
+  <select
+    name="dishDetails.portionSize"
+    value={formData.dishDetails.portionSize}
+    onChange={handleInputChange}
+    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+  >
+    <option value="">Select Portion Size</option>
+    <option value="Small">Small</option>
+    <option value="Medium">Medium</option>
+    <option value="Large">Large</option>
+    <option value="Extra Large">Extra Large</option>
+  </select>
+</div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Preparation Time</label>
-                <input
-                  type="text"
-                  name="dishDetails.preparationTime"
-                  value={formData.dishDetails.preparationTime}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
-                  placeholder="e.g., 15 mins"
-                />
-              </div>
+
+              
             </div>
 
         
-            <div className="flex justify-end gap-4">
+            
+
+            <div className="space-y-6">
+        {/* Image Upload */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Upload Images</label>
+          <div className="mt-2 flex flex-col items-center justify-center border-2 border-dashed border-gray-300 p-6 rounded-md cursor-pointer hover:border-gray-500">
+            <Upload size={32} className="text-gray-500 mb-2" />
+            <span className="text-sm text-gray-500">Click to upload or drag & drop</span>
+            <input
+              type="file"
+              multiple
+              className="hidden"
+              onChange={handleImageUpload}
+            />
+          </div>
+          {images.length > 0 && (
+            <div className="mt-4 grid grid-cols-3 gap-4">
+              {images.map((image, index) => (
+                <div key={index} className="relative">
+                  <img src={URL.createObjectURL(image)} alt="preview" className="w-full h-24 object-cover rounded-md" />
+                  <button
+                    onClick={() => removeImage(index)}
+                    className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="flex justify-end gap-4">
               <button
                 type="button"
                 onClick={onClose}

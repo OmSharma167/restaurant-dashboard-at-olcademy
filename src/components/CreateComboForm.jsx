@@ -4,6 +4,7 @@
 
 import { useState } from "react"
 import { Plus, Minus } from "lucide-react"
+import { X } from "lucide-react";
 
 // Simulating the shadcn/ui components
 const Button = ({ children, onClick, variant, size, className = "" }) => (
@@ -123,6 +124,8 @@ const CreateComboForm = ({ isOpen, onClose }) => {
       return
     }
 
+
+
     const combo = {
       name: comboName,
       price: Number(comboPrice),
@@ -141,9 +144,40 @@ const CreateComboForm = ({ isOpen, onClose }) => {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 w-screen bg-black bg-opacity-50 flex items-center justify-center p-4 overflow-auto">
-      <div className="bg-white   mt-20 p-6 rounded-lg w-full max-w-4xl">
-        <div className="mb-4  mt-32 overflow-x-auto">
+    <div className="fixed inset-0 bg-opacity-50  items-center justify-center p-4 overflow-auto w-3/4  bg-white shadow-md border-l border-gray-200 overflow-y-auto ml-[38%]">
+      <div className="bg-white   p-6 rounded-lg w-full max-w-4xl">
+        <div className="mb-4  mt-8 overflow-x-auto">
+          {/* <h3 className="text-xl font-bold mt-4">Creat Combo Items</h3> */}
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-semibold text-gray-800">Creat Combo Items</h2>
+            <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+              <X size={24} />
+            </button>
+          </div>
+
+
+        <div className="mb-4 space-y-2">
+          <Label htmlFor="comboName">Combo Name</Label>
+          <Input
+            id="comboName"
+            value={comboName}
+            onChange={(e) => setComboName(e.target.value)}
+            placeholder="Enter combo name"
+          />
+        </div>
+
+        <div className="mb-4 space-y-2">
+          <Label htmlFor="comboPrice">Combo Price</Label>
+          <Input
+            id="comboPrice"
+            value={comboPrice}
+            onChange={(e) => setComboPrice(e.target.value)}
+            placeholder="Enter combo price"
+            type="number"
+            min="0"
+            step="0.01"
+          />
+        </div>
           <table className="w-full border-collapse border border-gray-300">
             <thead>
               <tr className="bg-gray-200">
@@ -175,30 +209,7 @@ const CreateComboForm = ({ isOpen, onClose }) => {
             </tbody>
           </table>
         </div>
-        <h3 className="text-xl font-bold mt-4">Creat Combo Items</h3>
-
-        <div className="mb-4 space-y-2">
-          <Label htmlFor="comboName">Combo Name</Label>
-          <Input
-            id="comboName"
-            value={comboName}
-            onChange={(e) => setComboName(e.target.value)}
-            placeholder="Enter combo name"
-          />
-        </div>
-
-        <div className="mb-4 space-y-2">
-          <Label htmlFor="comboPrice">Combo Price</Label>
-          <Input
-            id="comboPrice"
-            value={comboPrice}
-            onChange={(e) => setComboPrice(e.target.value)}
-            placeholder="Enter combo price"
-            type="number"
-            min="0"
-            step="0.01"
-          />
-        </div>
+        
 
         <h3 className="text-xl font-bold mt-4">Selected Combo Items</h3>
         {selectedItems.length > 0 ? (

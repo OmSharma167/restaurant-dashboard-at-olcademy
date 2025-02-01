@@ -20,9 +20,9 @@ export default {
               description:
                 "Soft paneer marinated in spices and grilled to perfection.",
               dishDetails: {
-                servingInfo: "2 Pieces",
+                servingInfo: "1 Person",
                 calorieCount: "250 kcal",
-                portionSize: "Medium",
+                portionSize: "Small",
                 preparationTime: "15 mins",
               },
               images: ["https://via.placeholder.com/150"],
@@ -41,9 +41,9 @@ export default {
               charges: "No Extra Charge",
               description: "Crispy rolls stuffed with fresh vegetables.",
               dishDetails: {
-                servingInfo: "4 Pieces",
+                servingInfo: "2 persons",
                 calorieCount: "300 kcal",
-                portionSize: "Large",
+                portionSize: "Medium",
                 preparationTime: "20 mins",
               },
               images: ["https://via.placeholder.com/150"],
@@ -68,9 +68,9 @@ export default {
               description:
                 "Spiced and marinated chicken grilled to perfection.",
               dishDetails: {
-                servingInfo: "6 Pieces",
+                servingInfo: "4 person",
                 calorieCount: "350 kcal",
-                portionSize: "Medium",
+                portionSize: "Large",
                 preparationTime: "20 mins",
               },
               images: ["https://via.placeholder.com/150"],
@@ -90,7 +90,7 @@ export default {
               description:
                 "Juicy wings marinated in tandoori spices and grilled in the clay oven.",
               dishDetails: {
-                servingInfo: "8 Pieces",
+                servingInfo: "4 person",
                 calorieCount: "400 kcal",
                 portionSize: "Large",
                 preparationTime: "25 mins",
@@ -121,7 +121,7 @@ export default {
               charges: "No Extra Charge",
               description: "Tender chicken cooked in creamy butter sauce.",
               dishDetails: {
-                servingInfo: "1 Portion",
+                servingInfo: "4 person",
                 calorieCount: "400 kcal",
                 portionSize: "Large",
                 preparationTime: "25 mins",
@@ -147,9 +147,9 @@ export default {
               charges: "No Extra Charge",
               description: "Creamy tomato-based gravy with soft paneer cubes.",
               dishDetails: {
-                servingInfo: "1 Portion",
+                servingInfo: "4 person",
                 calorieCount: "380 kcal",
-                portionSize: "Medium",
+                portionSize: "Large",
                 preparationTime: "20 mins",
               },
               images: ["https://via.placeholder.com/150"],
@@ -168,9 +168,9 @@ export default {
               charges: "No Extra Charge",
               description: "Slow-cooked lentils in a buttery, creamy sauce.",
               dishDetails: {
-                servingInfo: "1 Bowl",
+                servingInfo: "1 person",
                 calorieCount: "300 kcal",
-                portionSize: "Medium",
+                portionSize: "Small",
                 preparationTime: "25 mins",
               },
               images: ["https://via.placeholder.com/150"],
@@ -201,9 +201,9 @@ export default {
               charges: "No Extra Charge",
               description: "Delicious kebabs made from spinach and peas.",
               dishDetails: {
-                servingInfo: "6 Pieces",
+                servingInfo: "4 person",
                 calorieCount: "150 kcal",
-                portionSize: "Small",
+                portionSize: "Large",
                 preparationTime: "15 mins",
               },
               images: ["https://via.placeholder.com/150"],
@@ -228,9 +228,9 @@ export default {
               description:
                 "Chicken wings shaped like a lollipop and fried crisp.",
               dishDetails: {
-                servingInfo: "6 Pieces",
+                servingInfo: "2 person",
                 calorieCount: "320 kcal",
-                portionSize: "Small",
+                portionSize: "Medium",
                 preparationTime: "15 mins",
               },
               images: ["https://via.placeholder.com/150"],
@@ -249,7 +249,7 @@ export default {
               charges: "No Extra Charge",
               description: "Spicy ground mutton skewers cooked on a grill.",
               dishDetails: {
-                servingInfo: "4 Kebabs",
+                servingInfo: "4 person",
                 calorieCount: "450 kcal",
                 portionSize: "Large",
                 preparationTime: "25 mins",

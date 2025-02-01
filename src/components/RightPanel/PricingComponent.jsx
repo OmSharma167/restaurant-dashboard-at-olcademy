@@ -11,10 +11,8 @@ const PricingComponent = ({
   const chargeOptions = ["No Charge", "Packaging Fee", "Service Charge"];
 
   return (
-    <div className="mb-4">
-      <label className="block text-gray-600 text-sm mb-2">
-        Pricing Details
-      </label>
+    <div className="mb-4 flex ">
+      
       <div className="grid grid-cols-3 gap-4">
         {/* Pricing Field */}
         <div>
@@ -34,7 +32,7 @@ const PricingComponent = ({
         </div>
 
         {/* Taxes Dropdown */}
-        <div>
+        {/* <div>
           <label className="block text-sm mb-1">Taxes</label>
           {isEditMode ? (
             <select
@@ -53,10 +51,10 @@ const PricingComponent = ({
               {taxes || "N/A"}
             </div>
           )}
-        </div>
+        </div> */}
 
         {/* Charges Dropdown */}
-        <div>
+        {/* <div>
           <label className="block text-sm mb-1">Charges</label>
           {isEditMode ? (
             <select
@@ -75,7 +73,7 @@ const PricingComponent = ({
               {charges || "N/A"}
             </div>
           )}
-        </div>
+        </div> */}
       </div>
     </div>
   );

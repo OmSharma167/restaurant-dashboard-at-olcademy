@@ -6,11 +6,11 @@ const CategoryComponent = ({
   onChange,
   categories,
   subCategories,
-  offers,
 }) => (
   <>
     {/* Category */}
-    <div className="mb-4">
+    <div className="flex gap-16">
+      <div className="mb-4">
       <label className="block text-gray-600 text-sm mb-1">Category</label>
       {isEditMode ? (
         <select
@@ -52,9 +52,10 @@ const CategoryComponent = ({
         </div>
       )}
     </div>
+    </div>
 
     {/* Offers */}
-    <div className="mb-4">
+    {/* <div className="mb-4">
       <label className="block text-gray-600 text-sm mb-1">Offers</label>
       {isEditMode ? (
         <select
@@ -73,7 +74,7 @@ const CategoryComponent = ({
           {data.offer || "N/A"}
         </div>
       )}
-    </div>
+    </div> */}
   </>
 );
 

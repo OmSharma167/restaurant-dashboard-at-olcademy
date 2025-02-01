@@ -128,8 +128,9 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
           {/* Add Item */}
           <button
             onClick={() => handleActionClick("Add Item")}
-            className="w-full py-2 bg-blue-500 text-white rounded-md"
+            className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 transition-all"
           >
+            <FiFolderPlus className="text-black" />
             Add Item
           </button>
 

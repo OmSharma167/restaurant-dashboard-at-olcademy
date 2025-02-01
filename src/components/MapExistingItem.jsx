@@ -1,8 +1,9 @@
 import { useState } from "react"
 import { FiLink, FiSearch, FiCheck, FiX } from "react-icons/fi"
 import { useNavigate } from "react-router-dom"
+import { X} from "lucide-react";
 
-const MapExistingItem = () => {
+const MapExistingItem = ({ isOpen, onClose, dropdownOptions = {} }) => {
   const navigate = useNavigate()
 
   const [isMapped, setIsMapped] = useState(false)
@@ -42,26 +43,28 @@ const MapExistingItem = () => {
     setIsMapped(true)
   }
 
-  const handleBackToHome = () => {
-    navigate("/")
-  }
+  
 
   return (
-    <div className="mt-12 w-3/4 h-screen bg-white shadow-lg border-l border-gray-200 overflow-y-auto ml-[9%] rounded-lg">
-      <h2 className="text-3xl font-bold mb-6 text-gray-800">Add Existing Items</h2>
+    <div className="mt-20 w-3/4  p-6 bg-white shadow-md border-l border-gray-200 overflow-y-auto ml-[38%]">
+      
 
-      <div className="mb-6">
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search items..."
-            value={searchTerm}
-            onChange={handleSearch}
-            className="w-full px-4 py-3 pl-10 pr-4 text-gray-700 bg-gray-100 border rounded-lg focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-          />
-          <FiSearch className="absolute left-3 top-3 text-gray-400" />
-        </div>
-      </div>
+      <div className="mb-6 p-4 flex items-center space-x-4">
+  <div className="relative flex-1">
+    <input
+      type="text"
+      placeholder="Search items..."
+      value={searchTerm}
+      onChange={handleSearch}
+      className="w-full px-4 py-3 pl-10 pr-4 text-gray-700 bg-gray-100 border rounded-lg focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+    />
+    <FiSearch className="absolute left-3 top-3 text-gray-400" />
+  </div>
+  <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+    <X size={24} />
+  </button>
+</div>
+
 
       <div className="mb-6 max-h-96 overflow-y-auto space-y-2">
         {filteredItems.map((item) => (
@@ -82,7 +85,7 @@ const MapExistingItem = () => {
         ))}
       </div>
 
-      <div className="flex justify-between items-center mt-14">
+      <div className="flex justify-between items-center mb-10 mt-10">
   <p className="text-sm text-gray-600">{selectedItems.length} item(s) selected</p>
   {!isPopupOpen && !isMapped && (
     <div className="flex gap-4">
@@ -91,14 +94,15 @@ const MapExistingItem = () => {
         className="flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all"
       >
         <FiLink />
-        <span>Map Selected Items</span>
+        <span>Add Selected Items</span>
       </button>
       <button
-        onClick={() => navigate("/")} // This will navigate to the home page
-        className="px-6 py-3 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-all"
-      >
-        Cancel
-      </button>
+                type="button"
+                onClick={onClose}
+                className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+              >
+                Cancel
+              </button>
     </div>
   )}
 </div>

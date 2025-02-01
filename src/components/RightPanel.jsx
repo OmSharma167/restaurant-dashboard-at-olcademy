@@ -62,7 +62,7 @@ const RightPanel = ({ selectedProduct, onDelete, onDuplicate }) => {
   }
 
   return (
-    <div className="w-2/3 p-6 bg-white shadow-md border-l border-gray-200 overflow-y-auto">
+    <div className="w-screen p-6 bg-white shadow-md border-l border-gray-200 overflow-y-auto">
       {/* Header */}
       <HeaderComponent
         title={data.name || "Untitled"}
@@ -73,7 +73,8 @@ const RightPanel = ({ selectedProduct, onDelete, onDuplicate }) => {
         onDuplicate={handleDuplicate}
       />
 
-      {/* Category Dropdowns */}
+      <div className="flex gap-9">
+        {/* Category Dropdowns */}
       <CategoryComponent
         isEditMode={isEditMode}
         data={data}
@@ -83,6 +84,16 @@ const RightPanel = ({ selectedProduct, onDelete, onDuplicate }) => {
         onChange={handleFieldChange}
       />
 
+      {/* Pricing */}
+      <PricingComponent
+        isEditMode={isEditMode}
+        pricing={data.pricing}
+        taxes={data.taxes}
+        charges={data.charges}
+        onChange={handleFieldChange}
+      />
+
+      </div>
       {/* Food Type */}
       <FoodTypeComponent
         isEditMode={isEditMode}
@@ -93,14 +104,7 @@ const RightPanel = ({ selectedProduct, onDelete, onDuplicate }) => {
       {/* Service Type */}
       <ServiceTypeComponent serviceTypes={data.serviceType || []} />
 
-      {/* Pricing */}
-      <PricingComponent
-        isEditMode={isEditMode}
-        pricing={data.pricing}
-        taxes={data.taxes}
-        charges={data.charges}
-        onChange={handleFieldChange}
-      />
+      
 
       {/* Dish Details */}
       <DishDetailsComponent
