@@ -15,9 +15,9 @@ export default function DineInMenu() {
   };
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col fixed h-screen">
       {/* <TopBar title="Dine-In Menu" /> */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex  flex-1 overflow-hidden">
         <LeftPanel
           categories={dineInCategories}
           onProductSelect={handleProductSelect}
