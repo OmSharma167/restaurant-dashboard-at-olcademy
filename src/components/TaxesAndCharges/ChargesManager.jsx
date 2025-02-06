@@ -243,7 +243,7 @@ function ChargesManager() {
               <th className="px-4 py-2 text-left font-medium">Name</th>
               <th className="px-4 py-2 text-left font-medium">Type</th>
               <th className="px-4 py-2 text-left font-medium">Value</th>
-              <th className="px-4 py-2 text-left font-medium">Applicable</th>
+              <th className="px-4 py-2 text-left font-medium">Status</th>
               <th className="px-4 py-2 text-left font-medium">Actions</th>
             </tr>
           </thead>

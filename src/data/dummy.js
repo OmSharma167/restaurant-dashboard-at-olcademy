@@ -37,7 +37,9 @@ export default {
               offer: "No Offer",
               serviceType: ["Delivery"],
               pricing: 200,
+
               taxes: "5% GST",
+              
               charges: "No Extra Charge",
               description: "Crispy rolls stuffed with fresh vegetables.",
               dishDetails: {

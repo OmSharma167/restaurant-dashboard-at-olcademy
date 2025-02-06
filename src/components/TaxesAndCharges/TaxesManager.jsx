@@ -5,14 +5,32 @@ const TAX_TYPES = {
   GST: "gst",
   STATE: "state",
   MUNICIPAL: "municipal",
-  SERVICE: "service"
+};
+
+const dropdownOptions = {
+  categories: [
+    "Starters",
+    "Main Course",
+    "Snacks",
+    "Soups & Salads",
+    "Breads",
+    "Beverages",
+  ],
+  subCategories: {
+    Starters: ["Veg Starters", "Non-Veg Starters"],
+    "Main Course": ["Veg Main Course", "Non-Veg Main Course"],
+    Snacks: ["Veg Snacks", "Non-Veg Snacks"],
+    "Soups & Salads": ["Soups", "Salads"],
+    Breads: ["Indian Breads", "Other Breads"],
+    Beverages: ["Hot Beverages", "Cold Beverages"],
+  },
 };
 
 const APPLICABLE_FOR = {
   DINE_IN: "dineIn",
   DELIVERY: "delivery",
   TAKEAWAY: "takeaway",
-  ALL: "all"
+  ALL: "all",
 };
 
 const initialTaxes = [
@@ -28,7 +46,7 @@ const initialTaxes = [
     calculationOrder: 1,
     effectiveFrom: "2024-01-01",
     effectiveTo: null,
-    exemptions: []
+    exemptions: [],
   },
   {
     _id: "2",
@@ -42,21 +60,7 @@ const initialTaxes = [
     calculationOrder: 1,
     effectiveFrom: "2024-01-01",
     effectiveTo: null,
-    exemptions: ["alcohol"]
-  },
-  {
-    _id: "3",
-    name: "Service Charge",
-    rate: 10,
-    type: TAX_TYPES.SERVICE,
-    applicableFor: [APPLICABLE_FOR.DINE_IN],
-    isApplicable: false,
-    isDefault: false,
-    isCompulsory: false,
-    calculationOrder: 2,
-    effectiveFrom: "2024-01-01",
-    effectiveTo: null,
-    exemptions: []
+    exemptions: ["alcohol"],
   },
   {
     _id: "4",
@@ -70,8 +74,8 @@ const initialTaxes = [
     calculationOrder: 3,
     effectiveFrom: "2024-01-01",
     effectiveTo: null,
-    exemptions: []
-  }
+    exemptions: [],
+  },
 ];
 
 function TaxesManager() {
@@ -81,9 +85,11 @@ function TaxesManager() {
     rate: 0,
     type: TAX_TYPES.GST,
     applicableFor: [APPLICABLE_FOR.ALL],
-    effectiveFrom: new Date().toISOString().split('T')[0],
+    effectiveFrom: new Date().toISOString().split("T")[0],
     effectiveTo: "",
-    exemptions: []
+    exemptions: [],
+    category: "",
+    subCategory: "",
   });
   const [editingTaxId, setEditingTaxId] = useState(null);
   const [error, setError] = useState(null);
@@ -99,7 +105,7 @@ function TaxesManager() {
       isApplicable: true,
       isDefault: false,
       isCompulsory: newTax.type === TAX_TYPES.GST,
-      calculationOrder: getCalculationOrder(newTax.type)
+      calculationOrder: getCalculationOrder(newTax.type),
     };
 
     setTaxes([...taxes, newTaxEntry]);
@@ -115,7 +121,10 @@ function TaxesManager() {
       setError("Please enter an effective from date");
       return false;
     }
-    if (newTax.effectiveTo && new Date(newTax.effectiveFrom) > new Date(newTax.effectiveTo)) {
+    if (
+      newTax.effectiveTo &&
+      new Date(newTax.effectiveFrom) > new Date(newTax.effectiveTo)
+    ) {
       setError("Effective from date must be before effective to date");
       return false;
     }
@@ -126,8 +135,6 @@ function TaxesManager() {
     switch (type) {
       case TAX_TYPES.GST:
         return 1;
-      case TAX_TYPES.SERVICE:
-        return 2;
       case TAX_TYPES.STATE:
         return 3;
       case TAX_TYPES.MUNICIPAL:
@@ -147,7 +154,9 @@ function TaxesManager() {
         applicableFor: taxToEdit.applicableFor,
         effectiveFrom: taxToEdit.effectiveFrom,
         effectiveTo: taxToEdit.effectiveTo || "",
-        exemptions: taxToEdit.exemptions
+        exemptions: taxToEdit.exemptions,
+        category: taxToEdit.category || "",
+        subCategory: taxToEdit.subCategory || "",
       });
       setEditingTaxId(_id);
       setError(null);
@@ -165,7 +174,7 @@ function TaxesManager() {
           ? {
               ...tax,
               ...newTax,
-              calculationOrder: getCalculationOrder(newTax.type)
+              calculationOrder: getCalculationOrder(newTax.type),
             }
           : tax
       )
@@ -179,9 +188,11 @@ function TaxesManager() {
       rate: 0,
       type: TAX_TYPES.GST,
       applicableFor: [APPLICABLE_FOR.ALL],
-      effectiveFrom: new Date().toISOString().split('T')[0],
+      effectiveFrom: new Date().toISOString().split("T")[0],
       effectiveTo: "",
-      exemptions: []
+      exemptions: [],
+      category: "",
+      subCategory: "",
     });
     setEditingTaxId(null);
     setError(null);
@@ -208,9 +219,21 @@ function TaxesManager() {
 
   const handleExemptionChange = (exemption) => {
     const updatedExemptions = newTax.exemptions.includes(exemption)
-      ? newTax.exemptions.filter(e => e !== exemption)
+      ? newTax.exemptions.filter((e) => e !== exemption)
       : [...newTax.exemptions, exemption];
     setNewTax({ ...newTax, exemptions: updatedExemptions });
+  };
+
+  const handleCategoryChange = (category) => {
+    setNewTax({
+      ...newTax,
+      category,
+      subCategory: "", // Reset subcategory when category changes
+    });
+  };
+
+  const getSubCategories = (category) => {
+    return dropdownOptions.subCategories[category] || [];
   };
 
   return (
@@ -221,13 +244,47 @@ function TaxesManager() {
             {error}
           </div>
         )}
-        
+
         <div className="bg-gray-50 p-4 rounded-lg mb-6">
           <h3 className="text-lg font-semibold mb-4">
             {editingTaxId ? "Edit Tax" : "Add New Tax"}
           </h3>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div>
+              <label className="block mb-2 font-medium">Category</label>
+              <select
+                className="w-full p-2 border border-gray-300 rounded-md cursor-pointer"
+                value={newTax.category}
+                onChange={(e) => handleCategoryChange(e.target.value)}
+              >
+                <option value="">Select Category</option>
+                {dropdownOptions.categories.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block mb-2 font-medium">Subcategory</label>
+              <select
+                className="w-full p-2 border border-gray-300 rounded-md cursor-pointer"
+                value={newTax.subCategory}
+                onChange={(e) =>
+                  setNewTax({ ...newTax, subCategory: e.target.value })
+                }
+                disabled={!newTax.category}
+              >
+                <option value="">Select Subcategory</option>
+                {getSubCategories(newTax.category).map((subCategory) => (
+                  <option key={subCategory} value={subCategory}>
+                    {subCategory}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             <div>
               <label className="block mb-2 font-medium">Tax Name</label>
               <input
@@ -238,19 +295,21 @@ function TaxesManager() {
                 required
               />
             </div>
-            
+
             <div>
               <label className="block mb-2 font-medium">Tax Rate (%)</label>
               <input
                 className="w-full p-2 border border-gray-300 rounded-md"
                 type="number"
                 value={newTax.rate}
-                onChange={(e) => setNewTax({ ...newTax, rate: parseFloat(e.target.value) })}
+                onChange={(e) =>
+                  setNewTax({ ...newTax, rate: parseFloat(e.target.value) })
+                }
                 placeholder="Enter tax rate"
                 required
               />
             </div>
-            
+
             <div>
               <label className="block mb-2 font-medium">Tax Type</label>
               <select
@@ -261,42 +320,34 @@ function TaxesManager() {
                 <option value={TAX_TYPES.GST}>GST</option>
                 <option value={TAX_TYPES.STATE}>State Tax</option>
                 <option value={TAX_TYPES.MUNICIPAL}>Municipal Tax</option>
-                <option value={TAX_TYPES.SERVICE}>Service Charge</option>
               </select>
             </div>
-            
+
             <div>
               <label className="block mb-2 font-medium">Applicable For</label>
               <select
                 className="w-full p-2 border border-gray-300 rounded-md"
                 value={newTax.applicableFor[0]}
-                onChange={(e) => setNewTax({ ...newTax, applicableFor: [e.target.value] })}
+                onChange={(e) =>
+                  setNewTax({ ...newTax, applicableFor: [e.target.value] })
+                }
               >
                 <option value={APPLICABLE_FOR.ALL}>All Orders</option>
                 <option value={APPLICABLE_FOR.DINE_IN}>Dine In Only</option>
-                <option value={APPLICABLE_FOR.DELIVERY}>Delivery Only</option>
                 <option value={APPLICABLE_FOR.TAKEAWAY}>Takeaway Only</option>
               </select>
             </div>
-            
+
             <div>
               <label className="block mb-2 font-medium">Effective From</label>
               <input
                 type="date"
                 className="w-full p-2 border border-gray-300 rounded-md"
                 value={newTax.effectiveFrom}
-                onChange={(e) => setNewTax({ ...newTax, effectiveFrom: e.target.value })}
+                onChange={(e) =>
+                  setNewTax({ ...newTax, effectiveFrom: e.target.value })
+                }
                 required
-              />
-            </div>
-            
-            <div>
-              <label className="block mb-2 font-medium">Effective To (Optional)</label>
-              <input
-                type="date"
-                className="w-full p-2 border border-gray-300 rounded-md"
-                value={newTax.effectiveTo}
-                onChange={(e) => setNewTax({ ...newTax, effectiveTo: e.target.value })}
               />
             </div>
           </div>
@@ -310,7 +361,7 @@ function TaxesManager() {
               <FiInfo className="mr-1" />
               {showExemptions ? "Hide Exemptions" : "Show Exemptions"}
             </button>
-            
+
             {showExemptions && (
               <div className="mt-2 space-y-2">
                 <label className="block font-medium">Tax Exemptions</label>
@@ -362,9 +413,13 @@ function TaxesManager() {
               <th className="px-4 py-2 text-left font-medium">Name</th>
               <th className="px-4 py-2 text-left font-medium">Type</th>
               <th className="px-4 py-2 text-left font-medium">Rate (%)</th>
-              <th className="px-4 py-2 text-left font-medium">Applicable For</th>
+              <th className="px-4 py-2 text-left font-medium">
+                Applicable For
+              </th>
               <th className="px-4 py-2 text-left font-medium">Status</th>
-              <th className="px-4 py-2 text-left font-medium">Effective Period</th>
+              <th className="px-4 py-2 text-left font-medium">
+                Effective Period
+              </th>
               <th className="px-4 py-2 text-left font-medium">Actions</th>
             </tr>
           </thead>
@@ -394,7 +449,7 @@ function TaxesManager() {
                   <button
                     className={`p-1 text-gray-600 hover:text-gray-900 mr-2 ${
                       tax.isDefault ? "opacity-50 cursor-not-allowed" : ""
-                    }` }
+                    }`}
                     onClick={() => handleEditTax(tax._id)}
                     disabled={tax.isDefault}
                   >
