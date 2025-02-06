@@ -7,7 +7,7 @@ function TaxesAndCharges() {
   const [activeTab, setActiveTab] = useState('taxes');
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-2">
       <div className="grid grid-cols-2 gap-2 rounded-lg mb-4">
         <button
           className={`p-3 text-base font-medium rounded-md ${activeTab === 'taxes' ? 'bg-red-500 text-white' : 'bg-gray-200'}`}

@@ -1,35 +1,70 @@
 // src/components/Offers/CreateOfferForm.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 function CreateOfferForm({ onSave, categories, subCategories, items }) {
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
-  const [discount, setDiscount] = useState("");
+  const [offerType, setOfferType] = useState("percentage");
+  const [percentage, setPercentage] = useState("");
+  const [fixedAmount, setFixedAmount] = useState("");
+  const [buyX, setBuyX] = useState("");
+  const [getY, setGetY] = useState("");
+  const [bundlePrice, setBundlePrice] = useState("");
   const [scope, setScope] = useState("item");
   const [categoryName, setCategoryName] = useState("");
   const [subCategoryName, setSubCategoryName] = useState("");
   const [selectedItemIds, setSelectedItemIds] = useState([]);
 
+  // Automatically set scope to 'item' for bundle offers
+  useEffect(() => {
+    if (offerType === "bundle") {
+      setScope("item");
+    }
+  }, [offerType]);
+
   const handleSave = () => {
+    // Basic validation
+    if (!name || !code) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
     const newOffer = {
       id: Date.now().toString(),
       name,
       code,
-      discount,
+      offerType,
       scope,
       categoryName: scope === "category" ? categoryName : null,
       subCategoryName: scope === "subcategory" ? subCategoryName : null,
       itemIds: scope === "item" ? selectedItemIds : [],
       active: true,
       validUntil: "2024-12-31",
+      // Offer-type specific fields
+      ...(offerType === "percentage" && { percentage: parseFloat(percentage) }),
+      ...(offerType === "fixed" && { fixedAmount: parseFloat(fixedAmount) }),
+      ...(offerType === "buyXgetY" && {
+        buyX: parseInt(buyX, 10),
+        getY: parseInt(getY, 10),
+      }),
+      ...(offerType === "bundle" && {
+        bundlePrice: parseFloat(bundlePrice),
+        bundledItems: selectedItemIds,
+      }),
     };
+
     onSave(newOffer);
 
     // Reset form
     setName("");
     setCode("");
-    setDiscount("");
+    setOfferType("percentage");
+    setPercentage("");
+    setFixedAmount("");
+    setBuyX("");
+    setGetY("");
+    setBundlePrice("");
     setScope("item");
     setCategoryName("");
     setSubCategoryName("");
@@ -54,6 +89,7 @@ function CreateOfferForm({ onSave, categories, subCategories, items }) {
         Create a New Offer
       </h2>
       <div className="space-y-3">
+        {/* Name and Code Inputs */}
         <div>
           <label className="block font-semibold text-gray-700">
             Offer Name
@@ -62,7 +98,7 @@ function CreateOfferForm({ onSave, categories, subCategories, items }) {
             className="border w-full px-3 py-1.5 rounded focus:outline-none focus:border-blue-400"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="e.g., 20% Off Starters"
+            placeholder="e.g., Summer Special"
           />
         </div>
 
@@ -74,33 +110,129 @@ function CreateOfferForm({ onSave, categories, subCategories, items }) {
             className="border w-full px-3 py-1.5 rounded focus:outline-none focus:border-blue-400"
             value={code}
             onChange={(e) => setCode(e.target.value)}
-            placeholder="e.g., START20"
+            placeholder="e.g., SUMMER24"
           />
         </div>
 
+        {/* Offer Type Dropdown */}
         <div>
-          <label className="block font-semibold text-gray-700">Discount</label>
-          <input
-            className="border w-full px-3 py-1.5 rounded focus:outline-none focus:border-blue-400"
-            value={discount}
-            onChange={(e) => setDiscount(e.target.value)}
-            placeholder="e.g., 20%, $5, BOGO"
-          />
-        </div>
-
-        <div>
-          <label className="block font-semibold text-gray-700">Scope</label>
+          <label className="block font-semibold text-gray-700">
+            Offer Type
+          </label>
           <select
             className="border w-full px-3 py-1.5 rounded focus:outline-none focus:border-blue-400"
-            value={scope}
-            onChange={(e) => setScope(e.target.value)}
+            value={offerType}
+            onChange={(e) => setOfferType(e.target.value)}
           >
-            <option value="item">Item</option>
-            <option value="subcategory">Subcategory</option>
-            <option value="category">Category</option>
+            <option value="percentage">Percentage Discount</option>
+            <option value="fixed">Fixed Discount</option>
+            <option value="bogo">BOGO (Buy One Get One)</option>
+            <option value="buyXgetY">Buy X Get Y Free</option>
+            <option value="bundle">Bundled Offer</option>
           </select>
         </div>
 
+        {/* Percentage Discount */}
+        {offerType === "percentage" && (
+          <div>
+            <label className="block font-semibold text-gray-700">
+              Discount Percentage
+            </label>
+            <input
+              type="number"
+              className="border w-full px-3 py-1.5 rounded focus:outline-none focus:border-blue-400"
+              value={percentage}
+              onChange={(e) => setPercentage(e.target.value)}
+              placeholder="e.g., 20"
+              min="0"
+              max="100"
+            />
+          </div>
+        )}
+
+        {/* Fixed Discount */}
+        {offerType === "fixed" && (
+          <div>
+            <label className="block font-semibold text-gray-700">
+              Fixed Amount ($)
+            </label>
+            <input
+              type="number"
+              className="border w-full px-3 py-1.5 rounded focus:outline-none focus:border-blue-400"
+              value={fixedAmount}
+              onChange={(e) => setFixedAmount(e.target.value)}
+              placeholder="e.g., 5"
+              min="0"
+            />
+          </div>
+        )}
+
+        {/* Buy X Get Y Free */}
+        {offerType === "buyXgetY" && (
+          <div className="space-y-2">
+            <div>
+              <label className="block font-semibold text-gray-700">
+                Buy Quantity (X)
+              </label>
+              <input
+                type="number"
+                className="border w-full px-3 py-1.5 rounded focus:outline-none focus:border-blue-400"
+                value={buyX}
+                onChange={(e) => setBuyX(e.target.value)}
+                placeholder="e.g., 2"
+                min="1"
+              />
+            </div>
+            <div>
+              <label className="block font-semibold text-gray-700">
+                Get Free Quantity (Y)
+              </label>
+              <input
+                type="number"
+                className="border w-full px-3 py-1.5 rounded focus:outline-none focus:border-blue-400"
+                value={getY}
+                onChange={(e) => setGetY(e.target.value)}
+                placeholder="e.g., 1"
+                min="1"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Bundle Offer */}
+        {offerType === "bundle" && (
+          <div>
+            <label className="block font-semibold text-gray-700">
+              Bundle Price ($)
+            </label>
+            <input
+              type="number"
+              className="border w-full px-3 py-1.5 rounded focus:outline-none focus:border-blue-400"
+              value={bundlePrice}
+              onChange={(e) => setBundlePrice(e.target.value)}
+              placeholder="e.g., 15"
+              min="0"
+            />
+          </div>
+        )}
+
+        {/* Scope Selection (hidden for bundles) */}
+        {offerType !== "bundle" && (
+          <div>
+            <label className="block font-semibold text-gray-700">Scope</label>
+            <select
+              className="border w-full px-3 py-1.5 rounded focus:outline-none focus:border-blue-400"
+              value={scope}
+              onChange={(e) => setScope(e.target.value)}
+            >
+              <option value="item">Item</option>
+              <option value="subcategory">Subcategory</option>
+              <option value="category">Category</option>
+            </select>
+          </div>
+        )}
+
+        {/* Category/Subcategory/Item Selection */}
         {scope === "category" && (
           <div>
             <label className="block font-semibold text-gray-700">
@@ -141,10 +273,12 @@ function CreateOfferForm({ onSave, categories, subCategories, items }) {
           </div>
         )}
 
-        {scope === "item" && (
+        {(scope === "item" || offerType === "bundle") && (
           <div>
             <label className="block font-semibold text-gray-700">
-              Select Items
+              {offerType === "bundle"
+                ? "Select Items for Bundle"
+                : "Select Items"}
             </label>
             <div className="max-h-32 overflow-auto border p-2 rounded">
               {items.map((itm) => (
