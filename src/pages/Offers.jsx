@@ -8,7 +8,7 @@ import { filterCategoriesByOffers } from "../utils/filterMenu";
 
 import CreateOfferForm from "../components/Offers/CreateOfferForm";
 import OffersList from "../components/Offers/OffersList";
-import CategoryDisplay from "../components/Offers/CategoryDisplay";
+// import CategoryDisplay from "../components/Offers/CategoryDisplay";
 
 function Offers() {
   const { deliveryCategories, dineInCategories } = dummy;
@@ -104,17 +104,19 @@ function Offers() {
         </div>
 
         {/* Items with Offers (Delivery) */}
-        <CategoryDisplay
+        {/* <CategoryDisplay
           data={impactedDelivery}
           offers={offers}
           title="Delivery"
-        />
+        /> */}
         {/* Items with Offers (Dine-In) */}
-        <CategoryDisplay
+        {/* <CategoryDisplay
           data={impactedDineIn}
           offers={offers}
           title="Dine-In"
-        />
+        /> */}
+
+
       </div>
     </motion.div>
   );
