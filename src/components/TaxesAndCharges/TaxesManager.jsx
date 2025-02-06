@@ -319,7 +319,7 @@ function TaxesManager() {
               >
                 <option value={TAX_TYPES.GST}>GST</option>
                 <option value={TAX_TYPES.STATE}>State Tax</option>
-                <option value={TAX_TYPES.MUNICIPAL}>Municipal Tax</option>
+                {/* <option value={TAX_TYPES.MUNICIPAL}>Municipal Tax</option> */}
               </select>
             </div>
 
