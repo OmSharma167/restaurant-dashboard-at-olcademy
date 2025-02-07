@@ -4,7 +4,6 @@ import { FiEdit, FiTrash2, FiInfo } from "react-icons/fi";
 const TAX_TYPES = {
   GST: "gst",
   STATE: "state",
-  MUNICIPAL: "municipal",
 };
 
 const dropdownOptions = {

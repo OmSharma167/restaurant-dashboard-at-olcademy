@@ -1,4 +1,3 @@
-// src/components/Offers/CreateOfferForm.jsx
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
@@ -15,6 +14,13 @@ function CreateOfferForm({ onSave, categories, subCategories, items }) {
   const [categoryName, setCategoryName] = useState("");
   const [subCategoryName, setSubCategoryName] = useState("");
   const [selectedItemIds, setSelectedItemIds] = useState([]);
+
+  // New state for offers dates
+  const [offersStartDate, setOffersStartDate] = useState("");
+  const [offersEndDate, setOffersEndDate] = useState("");
+
+  // New state for image upload
+  const [image, setImage] = useState(null);
 
   // Automatically set scope to 'item' for bundle offers
   useEffect(() => {
@@ -41,6 +47,9 @@ function CreateOfferForm({ onSave, categories, subCategories, items }) {
       itemIds: scope === "item" ? selectedItemIds : [],
       active: true,
       validUntil: "2024-12-31",
+      offersStartDate, // New field
+      offersEndDate, // New field
+      image, // New field for uploaded image
       // Offer-type specific fields
       ...(offerType === "percentage" && { percentage: parseFloat(percentage) }),
       ...(offerType === "fixed" && { fixedAmount: parseFloat(fixedAmount) }),
@@ -69,6 +78,9 @@ function CreateOfferForm({ onSave, categories, subCategories, items }) {
     setCategoryName("");
     setSubCategoryName("");
     setSelectedItemIds([]);
+    setOffersStartDate(""); // Reset field
+    setOffersEndDate(""); // Reset field
+    setImage(null); // Reset image
   };
 
   const handleItemCheckbox = (e) => {
@@ -76,6 +88,13 @@ function CreateOfferForm({ onSave, categories, subCategories, items }) {
     setSelectedItemIds((prev) =>
       prev.includes(val) ? prev.filter((id) => id !== val) : [...prev, val]
     );
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(URL.createObjectURL(file)); // Create a URL for the image
+    }
   };
 
   return (
@@ -112,6 +131,26 @@ function CreateOfferForm({ onSave, categories, subCategories, items }) {
             onChange={(e) => setCode(e.target.value)}
             placeholder="e.g., SUMMER24"
           />
+        </div>
+
+        {/* Image Upload Section */}
+        <div>
+          <label className="block font-semibold text-gray-700">
+            Upload Offer Image
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            className="border w-full px-3 py-1.5 rounded focus:outline-none focus:border-blue-400"
+            onChange={handleImageChange}
+          />
+          {image && (
+            <img
+              src={image}
+              alt="Offer Preview"
+              className="mt-2 h-32 w-32 object-cover"
+            />
+          )}
         </div>
 
         {/* Offer Type Dropdown */}
@@ -295,6 +334,31 @@ function CreateOfferForm({ onSave, categories, subCategories, items }) {
             </div>
           </div>
         )}
+
+        {/* Offers Start and End Date */}
+        <div>
+          <label className="block font-semibold text-gray-700">
+            Offers Start Date
+          </label>
+          <input
+            type="date"
+            className="border w-full px-3 py-1.5 rounded focus:outline-none focus:border-blue-400"
+            value={offersStartDate}
+            onChange={(e) => setOffersStartDate(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label className="block font-semibold text-gray-700">
+            Offers End Date
+          </label>
+          <input
+            type="date"
+            className="border w-full px-3 py-1.5 rounded focus:outline-none focus:border-blue-400"
+            value={offersEndDate}
+            onChange={(e) => setOffersEndDate(e.target.value)}
+          />
+        </div>
 
         <button
           className="mt-2 bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 transition-colors"

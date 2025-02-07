@@ -13,6 +13,7 @@ import OutletInfo from "./pages/OutletInfo";
 import Help from "./pages/Help";
 import AddItemForm from "./components/AddItemForm";
 import TaxesAndCharges from "./components/TaxesAndCharges/TaxAndCharges";
+import ManageTiffinSeeting from "./pages/ManageTiffinSeeting";
 
 
 
@@ -23,9 +24,10 @@ export default function App() {
         <Route path="/" element={<DashboardHome />} />
         <Route path="/delivery-menu" element={<DeliveryMenu />} />
         <Route path="/dine-in-menu" element={<DineInMenu />} />
-        <Route path="/add-item" element={< AddItemForm />} />
+        <Route path="/add-item" element={<AddItemForm />} />
         <Route path="/offers" element={<Offers />} />
         <Route path="/outlet-settings" element={<OutletSettings />} />
+        <Route path="/outlet-info" element={<ManageTiffinSeeting />} />
         <Route path="/outlet-info" element={<OutletInfo />} />
         <Route path="/help" element={<Help />} />
         <Route path="/taxes-charges" element={<TaxesAndCharges />} />

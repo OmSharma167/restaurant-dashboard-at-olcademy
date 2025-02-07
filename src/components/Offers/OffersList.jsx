@@ -15,8 +15,7 @@ function OffersList({ offers, onRemoveOffer, onEditOffer, itemMap }) {
 
   // Check if an offer is expired
   const isExpired = (offer) => {
-    if (!offer.validUntil) return false;
-    return new Date() > new Date(offer.validUntil);
+    return offer.validUntil && new Date() > new Date(offer.validUntil);
   };
 
   // Begin edit mode
@@ -74,16 +73,11 @@ function OffersList({ offers, onRemoveOffer, onEditOffer, itemMap }) {
 
   return (
     <div className="mt-8">
-      {/* Title */}
       <h2 className="text-xl font-bold mb-2 text-gray-800">Current Offers</h2>
 
       {offers.length === 0 ? (
         <p className="text-gray-500">No offers created yet.</p>
       ) : (
-        /**
-         * We wrap the list in an overflow-auto container with a max-height
-         * for about 4 cards. Adjust as needed.
-         */
         <div className="overflow-auto max-h-96">
           <ul className="space-y-3 pr-2">
             <AnimatePresence>
@@ -91,14 +85,12 @@ function OffersList({ offers, onRemoveOffer, onEditOffer, itemMap }) {
                 const expired = isExpired(offer);
                 const scopeBg = getScopeBadgeClass(offer.scope);
                 const targetDescription = getTargetDescription(offer);
-
                 const isEditing = editingOfferId === offer.id;
 
                 return (
                   <motion.li
                     key={offer.id}
-                    className="relative rounded p-4 flex flex-col border border-gray-100
-                               shadow-sm hover:shadow-md transition-shadow"
+                    className="relative rounded p-4 flex flex-col border border-gray-100 shadow-sm hover:shadow-md transition-shadow"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
@@ -113,8 +105,7 @@ function OffersList({ offers, onRemoveOffer, onEditOffer, itemMap }) {
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
-                            className="border px-2 py-1 rounded focus:outline-none
-                                       focus:border-blue-400 w-full text-sm"
+                            className="border px-2 py-1 rounded focus:outline-none focus:border-blue-400 w-full text-sm"
                             placeholder="Offer Name"
                           />
                           {expired && (
@@ -134,8 +125,7 @@ function OffersList({ offers, onRemoveOffer, onEditOffer, itemMap }) {
                               name="code"
                               value={formData.code}
                               onChange={handleChange}
-                              className="border px-2 py-1 rounded w-full focus:outline-none
-                                         focus:border-blue-400"
+                              className="border px-2 py-1 rounded w-full focus:outline-none focus:border-blue-400"
                             />
                           </div>
                           <div>
@@ -147,8 +137,7 @@ function OffersList({ offers, onRemoveOffer, onEditOffer, itemMap }) {
                               name="discount"
                               value={formData.discount}
                               onChange={handleChange}
-                              className="border px-2 py-1 rounded w-full focus:outline-none
-                                         focus:border-blue-400"
+                              className="border px-2 py-1 rounded w-full focus:outline-none focus:border-blue-400"
                             />
                           </div>
                         </div>
@@ -164,7 +153,7 @@ function OffersList({ offers, onRemoveOffer, onEditOffer, itemMap }) {
                           </span>
                         </div>
 
-                        {offer.validUntil !== undefined && (
+                        {offer.validUntil && (
                           <div className="mt-2">
                             <label className="block text-xs font-semibold text-gray-600">
                               Expires On
@@ -174,24 +163,20 @@ function OffersList({ offers, onRemoveOffer, onEditOffer, itemMap }) {
                               name="validUntil"
                               value={formData.validUntil}
                               onChange={handleChange}
-                              className="border px-2 py-1 rounded w-full focus:outline-none
-                                         focus:border-blue-400 text-sm"
+                              className="border px-2 py-1 rounded w-full focus:outline-none focus:border-blue-400 text-sm"
                             />
                           </div>
                         )}
 
-                        {/* Save / Cancel */}
                         <div className="flex items-center gap-3 mt-2">
                           <button
-                            className="bg-blue-600 text-white px-3 py-1 rounded text-sm
-                                       hover:bg-blue-700"
+                            className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
                             onClick={() => handleSave(offer.id)}
                           >
                             Save
                           </button>
                           <button
-                            className="bg-gray-300 text-gray-800 px-3 py-1 rounded text-sm
-                                       hover:bg-gray-400"
+                            className="bg-gray-300 text-gray-800 px-3 py-1 rounded text-sm hover:bg-gray-400"
                             onClick={handleCancelEdit}
                           >
                             Cancel
@@ -213,16 +198,13 @@ function OffersList({ offers, onRemoveOffer, onEditOffer, itemMap }) {
                             )}
                           </div>
 
-                          {/* Icons */}
                           <div className="flex gap-2">
                             <PencilIcon
-                              className="h-5 w-5 text-blue-600 cursor-pointer
-                                         hover:text-blue-800"
+                              className="h-5 w-5 text-blue-600 cursor-pointer hover:text-blue-800"
                               onClick={() => handleEditClick(offer)}
                             />
                             <TrashIcon
-                              className="h-5 w-5 text-red-500 cursor-pointer
-                                         hover:text-red-700"
+                              className="h-5 w-5 text-red-500 cursor-pointer hover:text-red-700"
                               onClick={() => onRemoveOffer(offer.id)}
                             />
                           </div>
