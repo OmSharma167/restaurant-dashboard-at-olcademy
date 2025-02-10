@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { NavLink } from "react-router-dom";
 import {
   HiOutlineHome,
@@ -14,7 +16,7 @@ import { outletData } from "../data/dummy"; // Update the path as necessary  // 
 
 export default function Sidebar() {
   const [expanded, setExpanded] = useState(true);
-
+  const navigate = useNavigate();
   // Main container: dark gray background, white text, smooth width transitions
   const sidebarClasses = `
     ${expanded ? "w-64" : "w-20"}
@@ -39,11 +41,6 @@ export default function Sidebar() {
   `;
 
   // Bottom outlet info: slide/fade in/out
-  const bottomInfoClasses = `
-    border-t border-gray-800 text-sm leading-tight
-    transition-all duration-300 ease-in-out overflow-hidden
-    ${expanded ? "max-h-32 p-4 opacity-100" : "max-h-0 p-0 opacity-0"}
-  `;
 
   // Nav items helper: icons + label fade
   function navItem(to, Icon, label) {
@@ -82,7 +79,7 @@ export default function Sidebar() {
       {/* Top bar with brand + toggle, using bg-red-600 */}
       <div className={topBarClasses}>
         <div className="flex items-center justify-between w-full">
-          <div className="font-bold text-2xl">{expanded ? "zomato" : "z"}</div>
+          <div className="font-bold text-2xl">{expanded ? "WYF" : "z"}</div>
           <button
             onClick={() => setExpanded(!expanded)}
             className="text-white focus:outline-none ml-2"
@@ -109,9 +106,9 @@ export default function Sidebar() {
             )}
           </li>
           <li>{navItem("/offers", HiOutlineGift, "Offers")}</li>
-          <li>
+          {/* <li>
             {navItem("/outlet-settings", HiOutlineCog, "Outlet settings")}
-          </li>
+          </li> */}
           <li>
             {navItem("/outlet-info", HiOutlineInformationCircle, "Outlet info")}
           </li>
@@ -120,10 +117,18 @@ export default function Sidebar() {
       </nav>
 
       {/* Bottom outlet info (slide/fade) */}
-      <div className={bottomInfoClasses}>
-        <div className="font-semibold">{outletData.name || "Loading..."}</div>
-        <div>{outletData.resId ? `RES ID : ${outletData.resId}` : ""}</div>
-        <div>{outletData.address}</div>
+      <div className="p-4 bg-gray-800">
+        <div>
+          <div className="font-semibold">{outletData.name || "Loading..."}</div>
+          <div>{outletData.resId ? `RES ID : ${outletData.resId}` : ""}</div>
+          <div>{outletData.address}</div>
+        </div>
+        <button
+          className="mt-3 w-full px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors duration-200"
+          onClick={() => navigate("/outlet-settings")}
+        >
+          Outlet Management
+        </button>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import { FaSave } from 'react-icons/fa';
 import { OperatingHoursSection } from './OperatingHoursSection';
 import { ClosureDaysSection } from './ClosureDaysSection';
 import { AdditionalSettingsSection } from './AdditionalSettingsSection';
-import TiffinDetails from './TiffinDetails';
+
 import axios from 'axios';
 
 const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -167,32 +167,7 @@ export default function TiffinSettings() {
     setTiffinFormData(newTiffinFormData);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const endpoint = isEditing
-        ? `${import.meta.env.VITE_BACKEND_URL}/api/tiffin/gamiyash15@gmail.com`
-        : `${import.meta.env.VITE_BACKEND_URL}/api/add-tiffin`;
-
-      const method = isEditing ? 'put' : 'post';
-
-      const response = await axios[method](endpoint, {
-        email: tiffinFormData.email,
-        phone: tiffinFormData.phone,
-        tiffinName: tiffinFormData.tiffinName,
-        category: tiffinFormData.category,
-        address: tiffinFormData.address,
-        serviceClouserDay: closureDates,
-        operatingTimes: timings,
-        additionalSettings: additionalSettings
-      });
-
-      alert(isEditing ? 'Data updated successfully!' : 'Data saved successfully!');
-    } catch (error) {
-      console.error('Error saving tiffin details:', error.response?.data || error.message);
-      alert(error.response?.data?.message || 'Error saving data');
-    }
-  };
+  
 
   
   if (isLoading) {
@@ -205,11 +180,8 @@ export default function TiffinSettings() {
 
   return (
     <div className="container mx-auto bg-gray-50">
-      <form onSubmit={handleSubmit} className="space-y-3">
-        <TiffinDetails
-          tiffinFormData={tiffinFormData}
-          ontiffinFormDataChange={handleTiffinDetailsChange}
-        />
+      <form  className="space-y-3">
+        
         <OperatingHoursSection
           timings={timings}
           handleTimingChange={handleTimingChange}

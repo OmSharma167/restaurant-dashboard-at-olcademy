@@ -17,7 +17,7 @@ export default function OutletSettings() {
 
       <div className="bg-white rounded shadow p-4 space-y-6">
         {/* Basic Info */}
-        <div>
+        {/* <div>
           <label className="block text-sm text-gray-600 mb-1">
             Outlet Name
           </label>
@@ -27,9 +27,9 @@ export default function OutletSettings() {
             value={outletName}
             onChange={(e) => setOutletName(e.target.value)}
           />
-        </div>
+        </div> */}
 
-        <div>
+        {/* <div>
           <label className="block text-sm text-gray-600 mb-1">
             Contact Number
           </label>
@@ -40,10 +40,10 @@ export default function OutletSettings() {
             value={contactNumber}
             onChange={(e) => setContactNumber(e.target.value)}
           />
-        </div>
+        </div> */}
 
         <div className="flex gap-4">
-          <div className="flex-1">
+          {/* <div className="flex-1">
             <label className="block text-sm text-gray-600 mb-1">
               Opening Hours
             </label>
@@ -54,8 +54,8 @@ export default function OutletSettings() {
               value={openingHours}
               onChange={(e) => setOpeningHours(e.target.value)}
             />
-          </div>
-          <div className="flex-1">
+          </div> */}
+          {/* <div className="flex-1">
             <label className="block text-sm text-gray-600 mb-1">
               Closing Hours
             </label>
@@ -66,12 +66,12 @@ export default function OutletSettings() {
               value={closingHours}
               onChange={(e) => setClosingHours(e.target.value)}
             />
-          </div>
+          </div> */}
         </div>
 
         {/* Animated Toggle for Delivery On/Off */}
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600">Delivery Service</span>
+          {/* <span className="text-sm text-gray-600">Delivery Service</span>
           <div
             className={`w-12 h-6 flex items-center bg-gray-300 rounded-full p-1 cursor-pointer transition ${
               deliveryToggle ? "justify-end bg-green-400" : "justify-start"
@@ -82,15 +82,15 @@ export default function OutletSettings() {
           </div>
           <span className="text-sm">
             {deliveryToggle ? "Enabled" : "Disabled"}
-          </span>
+          </span> */}
         </div>
 
-        <button
+        {/* <button
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
           onClick={saveSettings}
         >
           Save Settings
-        </button>
+        </button> */}
       </div>
     </div>
   );

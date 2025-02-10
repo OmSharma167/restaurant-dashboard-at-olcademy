@@ -8,12 +8,13 @@ import DashboardHome from "./pages/DashboardHome";
 import DeliveryMenu from "./pages/DeliveryMenu";
 import DineInMenu from "./pages/DineInMenu";
 import Offers from "./pages/Offers";
-import OutletSettings from "./pages/OutletSettings";
+// import OutletSettings from "./pages/OutletSettings";
 import OutletInfo from "./pages/OutletInfo";
 import Help from "./pages/Help";
 import AddItemForm from "./components/AddItemForm";
 import TaxesAndCharges from "./components/TaxesAndCharges/TaxAndCharges";
 import ManageTiffinSeeting from "./pages/ManageTiffinSeeting";
+import OutletDashboard from "./components/OutletSetting/OutletDashboard";
 
 
 
@@ -26,11 +27,12 @@ export default function App() {
         <Route path="/dine-in-menu" element={<DineInMenu />} />
         <Route path="/add-item" element={<AddItemForm />} />
         <Route path="/offers" element={<Offers />} />
-        <Route path="/outlet-settings" element={<OutletSettings />} />
+        <Route path="/outlet-settings" element={<OutletDashboard />} />
         <Route path="/outlet-info" element={<ManageTiffinSeeting />} />
         <Route path="/outlet-info" element={<OutletInfo />} />
         <Route path="/help" element={<Help />} />
         <Route path="/taxes-charges" element={<TaxesAndCharges />} />
+        //OutletDashboard
         {/* If you need more pages, add them here */}
       </Route>
     </Routes>
