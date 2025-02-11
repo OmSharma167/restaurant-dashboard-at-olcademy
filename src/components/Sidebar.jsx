@@ -109,6 +109,15 @@ export default function Sidebar() {
           {/* <li>
             {navItem("/outlet-settings", HiOutlineCog, "Outlet settings")}
           </li> */}
+
+          <li>
+            {navItem(
+              "/OrderManagement",
+              HiOutlineQuestionMarkCircle,
+              "OrderManagement"
+            )}
+          </li>
+          
           <li>
             {navItem("/outlet-info", HiOutlineInformationCircle, "Outlet info")}
           </li>
