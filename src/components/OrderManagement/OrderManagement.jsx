@@ -315,9 +315,9 @@ const OrderManagement = () => {
           {activeTab === "current-orders" && (
             <CurrentOrders orders={orders} onUpdateStatus={updateOrderStatus} />
           )}
-          {/* {activeTab === "order-history" && (
+          {activeTab === "order-history" && (
             <OrderHistory orders={orderHistory} />
-          )} */}
+          )}
         </div>
       </div>
     </div>
