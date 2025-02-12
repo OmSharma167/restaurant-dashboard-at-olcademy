@@ -112,12 +112,12 @@ export default function Sidebar() {
 
           <li>
             {navItem(
-              "/OrderManagement",
+              "/OrderManag",
               HiOutlineQuestionMarkCircle,
               "OrderManagement"
             )}
           </li>
-          
+
           <li>
             {navItem("/outlet-info", HiOutlineInformationCircle, "Outlet info")}
           </li>
