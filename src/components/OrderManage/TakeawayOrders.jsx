@@ -1,24 +1,25 @@
 import React from "react";
-import { Clock, User, ShoppingBag } from "lucide-react";
 
 const TakeawayOrders = ({ orders, onUpdateStatus }) => {
   // Calculate takeaway stats
   const stats = {
     totalOrders: orders.length,
     pendingOrders: orders.filter(
-      (order) => order.status === "pending" || order.status === "preparing"
+      (order) => order.status === "pending" || order.status === "prepare"
     ).length,
     avgTime: "15 min",
   };
 
   const getStatusStyle = (status) => {
     switch (status) {
-      case "preparing":
+      case "prepare":
         return "bg-black text-white";
       case "ready":
-        return "bg-gray-100 text-black";
-      case "served":
-        return "bg-green-500 text-white"; // Changed for better visibility
+        return "bg-green-500 text-white";
+      case "accept":
+        return "bg-blue-500 text-white";
+      case "reject":
+        return "bg-red-500 text-white";
       case "pending":
         return "bg-yellow-100 text-yellow-800";
       default:
@@ -26,8 +27,8 @@ const TakeawayOrders = ({ orders, onUpdateStatus }) => {
     }
   };
 
-  // Status options for the dropdown
-  const statusOptions = ["pending", "preparing", "ready", "served"];
+  // Updated status options for the dropdown
+  const statusOptions = ["pending", "accept", "reject", "prepare", "ready"];
 
   return (
     <div className="p-6">
