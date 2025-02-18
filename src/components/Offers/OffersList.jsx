@@ -78,7 +78,7 @@ function OffersList({ offers, onRemoveOffer, onEditOffer, itemMap }) {
       {offers.length === 0 ? (
         <p className="text-gray-500">No offers created yet.</p>
       ) : (
-        <div className="overflow-auto max-h-96">
+        <div className="overflow-auto ">
           <ul className="space-y-3 pr-2">
             <AnimatePresence>
               {offers.map((offer) => {

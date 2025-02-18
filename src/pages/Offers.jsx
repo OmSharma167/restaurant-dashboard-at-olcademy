@@ -77,10 +77,7 @@ function Offers() {
           Manage Offers
         </motion.h1>
 
-        {/**
-         * 'md:items-stretch' ensures on medium screens or larger,
-         * each column matches the tallest one's height.
-         */}
+        
         <div className="flex flex-col md:flex-row gap-8 md:items-stretch">
           {/* Left Column: Create Offer Form */}
           <div className="flex-1 bg-white shadow-sm rounded p-4">

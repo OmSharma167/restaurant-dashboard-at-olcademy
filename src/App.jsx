@@ -16,6 +16,8 @@ import TaxesAndCharges from "./components/TaxesAndCharges/TaxAndCharges";
 import ManageTiffinSeeting from "./pages/ManageTiffinSeeting";
 import OutletDashboard from "./components/OutletSetting/OutletDashboard";
 import OrderManag from "./components/OrderManage/OrderManag";
+import RestaurantReviews from "./components/RestaurantReviews/RestaurantReviews";
+
 
 
 
@@ -31,10 +33,10 @@ export default function App() {
         <Route path="/outlet-settings" element={<OutletDashboard />} />
         <Route path="/outlet-info" element={<ManageTiffinSeeting />} />
         <Route path="/outlet-info" element={<OutletInfo />} />
+        <Route path="Restaurant-Reviews" element={<RestaurantReviews />} />
+
         <Route path="/help" element={<Help />} />
         <Route path="/taxes-charges" element={<TaxesAndCharges />} />
-   
-        
         <Route path="/OrderManag" element={<OrderManag />} />
         {/* If you need more pages, add them here */}
       </Route>

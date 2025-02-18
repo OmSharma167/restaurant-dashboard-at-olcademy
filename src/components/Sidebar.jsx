@@ -11,7 +11,9 @@ import {
   HiOutlineInformationCircle,
   HiOutlineQuestionMarkCircle,
 } from "react-icons/hi";
-import { MdOutlineDining } from "react-icons/md";
+import { FiPackage } from "react-icons/fi";
+import { AiFillStar } from "react-icons/ai";
+import { MdOutlineDining, MdWarning } from "react-icons/md";
 import { outletData } from "../data/dummy"; // Update the path as necessary  // Import dummy data
 
 export default function Sidebar() {
@@ -109,15 +111,11 @@ export default function Sidebar() {
           {/* <li>
             {navItem("/outlet-settings", HiOutlineCog, "Outlet settings")}
           </li> */}
+          <li>{navItem("/OrderManag", FiPackage, "OrderManagement")}</li>
 
           <li>
-            {navItem(
-              "/OrderManag",
-              HiOutlineQuestionMarkCircle,
-              "OrderManagement"
-            )}
+            {navItem("/Restaurant-Reviews", AiFillStar, "RestaurantReviews")}
           </li>
-
           <li>
             {navItem("/outlet-info", HiOutlineInformationCircle, "Outlet info")}
           </li>
