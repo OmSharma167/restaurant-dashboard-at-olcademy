@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { AlertTriangle, MessageSquare, Users, Star } from "lucide-react";
+import {
+  AlertTriangle,
+  MessageSquare,
+  Users,
+  Star,
+  Reply,
+  Save,
+  Edit,
+  X,
+} from "lucide-react";
 
 const RestaurantReviews = () => {
   const initialReviews = [
@@ -10,22 +19,7 @@ const RestaurantReviews = () => {
       rating: 4.5,
       date: "2024-03-10",
       comment: "The pasta was excellent! Very authentic taste.",
-    },
-    {
-      id: "CUST002",
-      customer: "Lisa Anderson",
-      dish: "Caesar Salad",
-      rating: 0,
-      date: "2024-03-10",
-      comment: "very bad service",
-    },
-    {
-      id: "CUST001",
-      customer: "John Doe",
-      dish: "Spaghetti Carbonara",
-      rating: 4.5,
-      date: "2024-03-10",
-      comment: "The pasta was excellent! Very authentic taste.",
+      reply: "",
     },
     {
       id: "CUST002",
@@ -33,7 +27,8 @@ const RestaurantReviews = () => {
       dish: "Caesar Salad",
       rating: 1,
       date: "2024-03-10",
-      comment: "bad service",
+      comment: "very bad service",
+      reply: "",
     },
     {
       id: "CUST003",
@@ -42,15 +37,19 @@ const RestaurantReviews = () => {
       rating: 5,
       date: "2024-03-09",
       comment: "Best pizza in town! Perfectly crispy crust.",
+      reply: "",
     },
   ];
 
   const [timeFilter, setTimeFilter] = useState("all");
   const [sortBy, setSortBy] = useState("date");
   const [reviews, setReviews] = useState(initialReviews);
+  const [replyText, setReplyText] = useState("");
+  const [replyingTo, setReplyingTo] = useState(null);
+  const [editingReply, setEditingReply] = useState(null);
 
   const getFilteredAndSortedReviews = () => {
-    let filtered = [...initialReviews];
+    let filtered = [...reviews];
 
     if (timeFilter !== "all") {
       const now = new Date();
@@ -87,20 +86,17 @@ const RestaurantReviews = () => {
   };
 
   const renderStars = (rating) => {
+    const starColor = () => {
+      if (rating <= 1) return "text-red-500";
+      if (rating <= 2) return "text-orange-500";
+      if (rating <= 3) return "text-yellow-500";
+      if (rating <= 4) return "text-lime-500";
+      return "text-green-500";
+    };
+
     return (
-      <div className="flex">
-        {[...Array(5)].map((_, index) => (
-          <Star
-            key={index}
-            className={`w-4 h-4 ${
-              index < Math.floor(rating)
-                ? "fill-yellow-400 text-yellow-400"
-                : index < rating
-                ? "fill-yellow-400 text-yellow-400 opacity-50"
-                : "text-gray-300"
-            }`}
-          />
-        ))}
+      <div className="flex items-center">
+        <Star className={`w-6 h-6 ${starColor()}`} />
         <span className="ml-2 text-gray-600">({rating})</span>
       </div>
     );
@@ -123,6 +119,35 @@ const RestaurantReviews = () => {
       uniqueCustomers,
       attentionNeeded: currentReviews.filter((r) => r.rating <= 2).length,
     };
+  };
+
+  const handleReply = (reviewId) => {
+    setReplyingTo(reviewId);
+    setReplyText("");
+  };
+
+  const startEditingReply = (reviewId) => {
+    const review = reviews.find((r) => r.id === reviewId);
+    if (review) {
+      setEditingReply(reviewId);
+      setReplyText(review.reply);
+    }
+  };
+
+  const submitReply = (reviewId) => {
+    const updatedReviews = reviews.map((review) =>
+      review.id === reviewId ? { ...review, reply: replyText } : review
+    );
+    setReviews(updatedReviews);
+    setReplyText("");
+    setReplyingTo(null);
+    setEditingReply(null);
+  };
+
+  const cancelEdit = () => {
+    setReplyingTo(null);
+    setEditingReply(null);
+    setReplyText("");
   };
 
   const stats = calculateStats();
@@ -206,6 +231,7 @@ const RestaurantReviews = () => {
               <th className="text-left p-4 text-gray-600">RATING</th>
               <th className="text-left p-4 text-gray-600">DATE</th>
               <th className="text-left p-4 text-gray-600">COMMENT</th>
+              <th className="text-left p-4 text-gray-600">REPLY</th>
             </tr>
           </thead>
           <tbody>
@@ -217,6 +243,88 @@ const RestaurantReviews = () => {
                 <td className="p-4">{renderStars(review.rating)}</td>
                 <td className="p-4">{review.date}</td>
                 <td className="p-4">{review.comment}</td>
+                <td className="p-4">
+                  {review.reply && editingReply !== review.id ? (
+                    <div className="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500">
+                      <div className="text-xs font-medium text-blue-700 mb-1">
+                        Reply from Manager:
+                      </div>
+                      <div className="text-sm text-gray-800">
+                        {review.reply}
+                      </div>
+                      <div className="mt-2 flex justify-end">
+                        <button
+                          onClick={() => startEditingReply(review.id)}
+                          className="text-xs text-blue-600 hover:text-blue-800 flex items-center"
+                        >
+                          <Edit className="w-3 h-3 mr-1" />
+                          Edit
+                        </button>
+                      </div>
+                    </div>
+                  ) : editingReply === review.id ? (
+                    <div className="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500">
+                      <div className="text-xs font-medium text-blue-700 mb-1">
+                        Reply from Manager:
+                      </div>
+                      <textarea
+                        className="w-full p-2 border border-gray-300 rounded-lg text-sm bg-white"
+                        value={replyText}
+                        onChange={(e) => setReplyText(e.target.value)}
+                        rows={3}
+                      />
+                      <div className="mt-2 flex justify-end space-x-2">
+                        <button
+                          onClick={cancelEdit}
+                          className="text-xs text-gray-600 hover:text-gray-800 flex items-center"
+                        >
+                          <X className="w-3 h-3 mr-1" />
+                          Cancel
+                        </button>
+                        <button
+                          onClick={() => submitReply(review.id)}
+                          className="text-xs text-green-600 hover:text-green-800 flex items-center"
+                        >
+                          <Save className="w-3 h-3 mr-1" />
+                          Save
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => handleReply(review.id)}
+                      className="flex items-center text-blue-500 hover:text-blue-700"
+                    >
+                      <Reply className="w-4 h-4 mr-2" />
+                      Reply
+                    </button>
+                  )}
+                  {replyingTo === review.id && !review.reply && (
+                    <div className="mt-2">
+                      <textarea
+                        className="w-full p-2 border border-gray-300 rounded-lg"
+                        value={replyText}
+                        onChange={(e) => setReplyText(e.target.value)}
+                        placeholder="Type your reply here..."
+                        rows={3}
+                      />
+                      <div className="flex justify-between mt-2">
+                        <button
+                          onClick={cancelEdit}
+                          className="px-3 py-1 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-100"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          onClick={() => submitReply(review.id)}
+                          className="px-4 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                        >
+                          Submit
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>

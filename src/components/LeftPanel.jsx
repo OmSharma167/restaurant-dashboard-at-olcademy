@@ -30,7 +30,9 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
       setShowAddItemForm(true)
     } else if (action === "Map Existing Item") {
       setShowMapExistingItem(true)
-    } else if (action === "Create Combo") {
+    } 
+    
+    else if (action === "Create Combo") {
       setShowCreateComboForm(true) // Show the CreateComboForm
     } else if (action === "Add Subcategory") {
       // Add this condition
@@ -67,7 +69,9 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
     <div className="bg-gray-50 border-r border-gray-200 flex flex-col justify-between     overflow-hidden custom-scrollbar">
       {/* Menu Listing */}
       <div className="flex-1 overflow-hidden">
-        <h2 className="text-xl font-semibold mb-6 text-gray-700">Menu Listing</h2>
+        <h2 className="text-xl font-semibold mb-6 text-gray-700">
+          Menu Listing
+        </h2>
         {categories.map((category) => (
           <div key={category.name} className="mb-4">
             {/* Category Header */}
@@ -76,7 +80,8 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
               className="flex justify-between items-center cursor-pointer mb-2 py-2 px-3 bg-white rounded-md shadow-sm hover:bg-gray-100 transition-all duration-300 ease-in-out"
             >
               <h3 className="font-medium text-gray-700">
-                {category.name} ({category.subCount || 0} sub, {category.itemCount || 0} items)
+                {category.name} ({category.subCount || 0} sub,{" "}
+                {category.itemCount || 0} items)
               </h3>
               <FiChevronDown
                 className={`text-gray-500 transition-transform duration-300 ${
@@ -88,7 +93,9 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
             {/* Subcategories */}
             <div
               className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                openCategories[category.name] ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                openCategories[category.name]
+                  ? "max-h-96 opacity-100"
+                  : "max-h-0 opacity-0"
               }`}
             >
               {category.subcategories?.map((sub) => (
@@ -106,8 +113,8 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
                             item.type === "Veg"
                               ? "text-green-500"
                               : item.type === "Non-Veg"
-                                ? "text-red-500"
-                                : "text-yellow-500"
+                              ? "text-red-500"
+                              : "text-yellow-500"
                           }
                         />
                         <span>{item.name}</span>
@@ -140,7 +147,9 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
             className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 transition-all"
           >
             <FiLink className="text-green-500" />
-            <span className="text-gray-700 text-sm font-medium">Add Existing Item</span>
+            <span className="text-gray-700 text-sm font-medium">
+              Add Existing Item
+            </span>
           </button>
 
           {/* Create Combo */}
@@ -149,7 +158,9 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
             className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 transition-all"
           >
             <FiLayers className="text-yellow-500" />
-            <span className="text-gray-700 text-sm font-medium">Create Combo</span>
+            <span className="text-gray-700 text-sm font-medium">
+              Create Combo
+            </span>
           </button>
 
           {/* Add Subcategory */}
@@ -158,7 +169,20 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
             className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 transition-all"
           >
             <FiFolderPlus className="text-purple-500" />
-            <span className="text-gray-700 text-sm font-medium">Add Subcategory</span>
+            <span className="text-gray-700 text-sm font-medium">
+              Add Subcategory
+            </span>
+          </button>
+
+          {/* Show  More */}
+          <button
+            onClick={() => handleActionClick("Create Combo")}
+            className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 transition-all"
+          >
+            <FiLayers className="text-yellow-500" />
+            <span className="text-gray-700 text-sm font-medium">
+              Show More{" "}
+            </span>
           </button>
         </div>
       </div>
@@ -166,7 +190,11 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
       {/* Add Item Form */}
       {showAddItemForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <AddItemForm isOpen={showAddItemForm} onClose={handleCloseAddItem} dropdownOptions={dropdownOptions} />
+          <AddItemForm
+            isOpen={showAddItemForm}
+            onClose={handleCloseAddItem}
+            dropdownOptions={dropdownOptions}
+          />
         </div>
       )}
 
@@ -180,7 +208,11 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
       {/* Create Combo Form */}
       {showCreateComboForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <CreateComboForm isOpen={showCreateComboForm} onClose={handleCloseCreateCombo} categories={categories} />
+          <CreateComboForm
+            isOpen={showCreateComboForm}
+            onClose={handleCloseCreateCombo}
+            categories={categories}
+          />
         </div>
       )}
 
@@ -198,11 +230,13 @@ const LeftPanel = ({ categories = [], onProductSelect, dropdownOptions }) => {
       {/* Pop-Up for other actions */}
       {isPopUpOpen && (
         <PopUp isOpen={isPopUpOpen} onClose={closePopUp} title={popUpTitle}>
-          <p className="text-gray-600">This feature will be implemented soon.</p>
+          <p className="text-gray-600">
+            This feature will be implemented soon.
+          </p>
         </PopUp>
       )}
     </div>
-  )
+  );
 }
 
 export default LeftPanel
