@@ -230,7 +230,7 @@ export default function RestaurantDashboard() {
 
   const stats = [
     { label: "Total Orders", value: "1,250", change: "+12%", icon: Star },
-    { label: "Revenue", value: "$45,000", change: "+8%", icon: Star },
+    { label: "Total Costomer", value: "10000", change: "+8%", icon: Star },
     { label: "New Customers", value: "320", change: "+5%", icon: Star },
     { label: "Total Reviews", value: "780", change: "+15%", icon: Star },
   ];
@@ -668,14 +668,14 @@ export default function RestaurantDashboard() {
                 stroke="#10b981"
                 strokeWidth={2}
               />
-              {/* <Line
+              <Line
                 type="monotone"
                 dataKey="orders"
                 data={serviceTimeData.dinein[timePeriod]}
                 name="Dine-in Orders"
                 stroke="#8884d8"
                 strokeWidth={2}
-              /> */}
+              />
             </LineChart>
           </ResponsiveContainer>
         </div>
