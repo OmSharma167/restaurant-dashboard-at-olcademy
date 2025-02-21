@@ -62,7 +62,7 @@ const RightPanel = ({ selectedProduct, onDelete, onDuplicate }) => {
   }
 
   return (
-    <div className=" w-full p-6 bg-white shadow-md border-l border-gray-200 overflow-y-auto">
+    <div className=" w-full p-6  bg-white shadow-md border-l border-gray-200 overflow-y-auto">
       {/* Header */}
       <HeaderComponent
         title={data.name || "Untitled"}

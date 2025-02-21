@@ -18,7 +18,7 @@ const RestaurantReviews = () => {
       dish: "Spaghetti Carbonara",
       rating: 4.5,
       date: "2024-03-10",
-      comment: "The pasta was excellent! Very authentic taste.",
+      comment: "The pasta was  dfghjkolp;[polikjhgfdfghjkl[[p;lokjhgfcvhjkl excellent! Very authentic taste.",
       reply: "",
     },
     {
@@ -85,19 +85,29 @@ const RestaurantReviews = () => {
     return filtered;
   };
 
+  // Updated renderStars function to match the image style
   const renderStars = (rating) => {
-    const starColor = () => {
-      if (rating <= 1) return "text-red-500";
-      if (rating <= 2) return "text-orange-500";
-      if (rating <= 3) return "text-yellow-500";
-      if (rating <= 4) return "text-lime-500";
-      return "text-green-500";
+    // Determine badge background color based on rating
+    const getBadgeColor = () => {
+      if (rating <= 2) return "bg-orange-600"; // Orange/red for low ratings (2★ in image)
+      if (rating < 4) return "bg-yellow-500"; // Yellow for medium ratings
+      return "bg-green-800"; // Dark green for high ratings (5★ in image)
     };
+
+    // Round the rating to nearest integer for display
+    const displayRating = Math.round(rating);
 
     return (
       <div className="flex items-center">
-        <Star className={`w-6 h-6 ${starColor()}`} />
-        <span className="ml-2 text-gray-600">({rating})</span>
+        <div
+          className={`${getBadgeColor()} text-white rounded px-2 py-0.5 flex items-center`}
+        >
+          <span className="font-bold mr-0.5">{displayRating}</span>
+          <Star className="w-3 h-3 fill-current" />
+        </div>
+        {/* <span className="ml-2 text-xs text-gray-500 uppercase font-medium">
+          DINING
+        </span> */}
       </div>
     );
   };
@@ -241,7 +251,12 @@ const RestaurantReviews = () => {
                 <td className="p-4">{review.customer}</td>
                 <td className="p-4">{review.dish}</td>
                 <td className="p-4">{renderStars(review.rating)}</td>
-                <td className="p-4">{review.date}</td>
+                <td className="p-4">
+                  <div className="flex flex-col">
+                    <span>{review.date}</span>
+                    <span className="text-xs text-gray-500">4 days ago</span>
+                  </div>
+                </td>
                 <td className="p-4">{review.comment}</td>
                 <td className="p-4">
                   {review.reply && editingReply !== review.id ? (
