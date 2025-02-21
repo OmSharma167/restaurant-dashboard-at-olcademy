@@ -668,14 +668,14 @@ export default function RestaurantDashboard() {
                 stroke="#10b981"
                 strokeWidth={2}
               />
-              <Line
+              {/* <Line
                 type="monotone"
                 dataKey="orders"
                 data={serviceTimeData.dinein[timePeriod]}
                 name="Dine-in Orders"
                 stroke="#8884d8"
                 strokeWidth={2}
-              />
+              /> */}
             </LineChart>
           </ResponsiveContainer>
         </div>
