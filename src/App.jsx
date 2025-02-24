@@ -18,6 +18,7 @@ import OutletDashboard from "./components/OutletSetting/OutletDashboard";
 import OrderManag from "./components/OrderManage/OrderManag";
 import RestaurantReviews from "./components/RestaurantReviews/RestaurantReviews";
 import RestaurantDashboard from "./components/Dashboard/RestaurantDashboard";
+import AllOutletdata from "./components/Dashboard/AllOutletdata/AllOutletdata";
 
 
 
@@ -36,10 +37,10 @@ export default function App() {
         <Route path="/outlet-info" element={<ManageTiffinSeeting />} />
         <Route path="/outlet-info" element={<OutletInfo />} />
         <Route path="Restaurant-Reviews" element={<RestaurantReviews />} />
-
         <Route path="/help" element={<Help />} />
         <Route path="/taxes-charges" element={<TaxesAndCharges />} />
         <Route path="/OrderManag" element={<OrderManag />} />
+        <Route path="/AllOutletdata" element={<AllOutletdata />} />
         {/* If you need more pages, add them here */}
       </Route>
     </Routes>

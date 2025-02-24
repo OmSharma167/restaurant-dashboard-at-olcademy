@@ -1,62 +1,7 @@
-// import React from "react";
-// import {
-//   LineChart,
-//   Line,
-//   XAxis,
-//   YAxis,
-//   CartesianGrid,
-//   Tooltip,
-//   Legend,
-//   ResponsiveContainer,
-// } from "recharts";
-
-// export default function ComparisonChart({ timePeriod, data }) {
-//   const comparisonData = data.takeaway[timePeriod].map((item, index) => ({
-//     name: item.name,
-//     takeawayOrders: item.orders,
-//     dineinOrders: data.dinein[timePeriod][index].orders,
-//   }));
-
-//   return (
-//     <div className="mt-6 bg-white p-6 rounded-lg shadow-sm">
-//       <h2 className="text-lg font-semibold text-gray-700 mb-4">
-//         Service Comparison -{" "}
-//         {timePeriod.charAt(0).toUpperCase() + timePeriod.slice(1)}
-//       </h2>
-//       <div className="h-64">
-//         <ResponsiveContainer width="100%" height="100%">
-//           <LineChart data={comparisonData}>
-//             <CartesianGrid strokeDasharray="3 3" />
-//             <XAxis dataKey="name" />
-//             <YAxis />
-//             <Tooltip />
-//             <Legend />
-//             <Line
-//               type="monotone"
-//               dataKey="takeawayOrders"
-//               name="Takeaway Orders"
-//               stroke="#10b981"
-//               strokeWidth={2}
-//             />
-//             <Line
-//               type="monotone"
-//               dataKey="dineinOrders"
-//               name="Dine-in Orders"
-//               stroke="#8884d8"
-//               strokeWidth={2}
-//             />
-//           </LineChart>
-//         </ResponsiveContainer>
-//       </div>
-//     </div>
-//   );
-// }
-
-
-import React, { useState } from "react";
+import React from "react";
 import {
-  LineChart,
-  Line,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -65,89 +10,96 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-export default function ComparisonChart({
-  initialTimePeriod,
-  data,
-  onTimePeriodChange,
-}) {
-  const [timePeriod, setTimePeriod] = useState(initialTimePeriod || "daily");
+export default function ComparisonChart({ timePeriod, serviceView, data }) {
+  // Get all unique years from both takeaway and dinein data for the given timePeriod
+  const allYears = [
+    ...new Set([
+      ...data.takeaway[timePeriod].map((item) => item.name),
+      ...data.dinein[timePeriod].map((item) => item.name),
+    ]),
+  ].sort();
 
-  const getTabStyle = (tab) => {
-    return tab === timePeriod
-      ? "px-3 py-1 bg-white rounded-md shadow-sm text-indigo-600 font-medium"
-      : "px-3 py-1 text-gray-600 hover:bg-gray-200 rounded-md";
-  };
+  const comparisonData = allYears.map((year) => {
+    // Handle different data structures between time periods
+    const getOrders = (item, serviceType) => {
+      if (timePeriod === "yearly") {
+        return serviceType === "takeaway"
+          ? item.takeawayOrders
+          : item.dineinOrders;
+      }
+      return item.orders;
+    };
 
-  const handleTimePeriodChange = (period) => {
-    setTimePeriod(period);
-    if (onTimePeriodChange) {
-      onTimePeriodChange(period);
-    }
-  };
+    const takeawayItem =
+      data.takeaway[timePeriod].find((item) => item.name === year) || {};
 
-  const comparisonData = data.takeaway[timePeriod].map((item, index) => ({
-    name: item.name,
-    takeawayOrders: item.orders,
-    dineinOrders: data.dinein[timePeriod][index].orders,
-  }));
+    const dineinItem =
+      data.dinein[timePeriod].find((item) => item.name === year) || {};
+
+    return {
+      name: year,
+      takeawayOrders: getOrders(takeawayItem, "takeaway") || 0,
+      dineinOrders: getOrders(dineinItem, "dinein") || 0,
+      totalOrders:
+        (takeawayItem.totalOrders || 0) + (dineinItem.totalOrders || 0),
+    };
+  });
 
   return (
     <div className="mt-6 bg-white p-6 rounded-lg shadow-sm">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-gray-700">
-          Service Comparison -{" "}
-          {timePeriod.charAt(0).toUpperCase() + timePeriod.slice(1)}
-        </h2>
-        <div className="flex space-x-2 bg-gray-100 p-1 rounded-lg">
-          <button
-            className={getTabStyle("daily")}
-            onClick={() => handleTimePeriodChange("daily")}
-          >
-            Daily
-          </button>
-          <button
-            className={getTabStyle("weekly")}
-            onClick={() => handleTimePeriodChange("weekly")}
-          >
-            Weekly
-          </button>
-          <button
-            className={getTabStyle("monthly")}
-            onClick={() => handleTimePeriodChange("monthly")}
-          >
-            Monthly
-          </button>
-          <button
-            className={getTabStyle("yearly")}
-            onClick={() => handleTimePeriodChange("yearly")}
-          >
-            Yearly
-          </button>
-        </div>
-      </div>
+      <h2 className="text-lg font-semibold mb-4">Order Comparison</h2>
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={comparisonData}>
+          <BarChart
+            data={comparisonData}
+            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+          >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
             <Legend />
-            <Line
-              type="monotone"
-              dataKey="takeawayOrders"
-              name="Takeaway Orders"
-              stroke="#10b981"
-              strokeWidth={2}
-            />
-            <Line
-              type="monotone"
-              dataKey="dineinOrders"
-              name="Dine-in Orders"
-              stroke="#8884d8"
-              strokeWidth={2}
-            />
-          </LineChart>
+            {serviceView === "both" && (
+              <>
+                <Bar
+                  dataKey="takeawayOrders"
+                  name="Takeaway Orders"
+                  fill="#10b981"
+                  barSize={30}
+                />
+                <Bar
+                  dataKey="dineinOrders"
+                  name="Dine-in Orders"
+                  fill="#8884d8"
+                  barSize={30}
+                />
+              </>
+            )}
+            {serviceView === "dinein" && (
+              <Bar
+                dataKey="dineinOrders"
+                name="Dine-in Orders"
+                fill="#8884d8"
+                barSize={30}
+              />
+            )}
+            {serviceView === "takeaway" && (
+              <Bar
+                dataKey="takeawayOrders"
+                name="Takeaway Orders"
+                fill="#10b981"
+                barSize={30}
+              />
+            )}
+            {serviceView === "all" && (
+              <Bar
+                dataKey="totalOrders"
+                name="Total Orders"
+                fill="#ff7300"
+                barSize={30}
+              />
+            )}
+          </BarChart>
         </ResponsiveContainer>
       </div>
     </div>
