@@ -11,7 +11,7 @@ import Offers from "./pages/Offers";
 // import OutletSettings from "./pages/OutletSettings";
 import OutletInfo from "./pages/OutletInfo";
 import Help from "./pages/Help";
-import AddItemForm from "./components/AddItemForm";
+import AddItemForm from "./components/Dining_Takeaway_Menu_Management/AddItemForm";
 import TaxesAndCharges from "./components/TaxesAndCharges/TaxAndCharges";
 import ManageTiffinSeeting from "./pages/ManageTiffinSeeting";
 import OutletDashboard from "./components/OutletSetting/OutletDashboard";
@@ -19,9 +19,7 @@ import OrderManag from "./components/OrderManage/OrderManag";
 import RestaurantReviews from "./components/RestaurantReviews/RestaurantReviews";
 import RestaurantDashboard from "./components/Dashboard/RestaurantDashboard";
 import AllOutletdata from "./components/Dashboard/AllOutletdata/AllOutletdata";
-
-
-
+import MapExistingItem from "./components/Dining_Takeaway_Menu_Management/MapExistingItem";
 
 export default function App() {
   return (
@@ -29,8 +27,24 @@ export default function App() {
       <Route element={<DashboardLayout />}>
         <Route path="/" element={<RestaurantDashboard />} />
         {/* <Route path="/" element={<DashboardHome />} /> */}
-        <Route path="/delivery-menu" element={<DeliveryMenu />} />
-        <Route path="/dine-in-menu" element={<DineInMenu />} />
+        {/* <Route path="/delivery-menu" element={<DeliveryMenu />} />
+        <Route path="/dine-in-menu" element={<DineInMenu />} /> */}
+        <Route
+          path="/delivery-menu"
+          element={<DeliveryMenu showServiceType="Dine-in" />}
+        />
+        <Route
+          path="/dine-in-menu"
+          element={<DineInMenu showServiceType="Takeaway" />}
+        />
+        {/* <Route
+          path="/delivery-menu"
+          element={<MapExistingItem serviceType="Takeaway" />}
+        />
+        <Route
+          path="/dine-in-menu"
+          element={<MapExistingItem serviceType="Dine-in" />}
+        /> */}
         <Route path="/add-item" element={<AddItemForm />} />
         <Route path="/offers" element={<Offers />} />
         <Route path="/outlet-settings" element={<OutletDashboard />} />
@@ -41,6 +55,7 @@ export default function App() {
         <Route path="/taxes-charges" element={<TaxesAndCharges />} />
         <Route path="/OrderManag" element={<OrderManag />} />
         <Route path="/AllOutletdata" element={<AllOutletdata />} />
+
         {/* If you need more pages, add them here */}
       </Route>
     </Routes>
